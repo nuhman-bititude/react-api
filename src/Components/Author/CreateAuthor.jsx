@@ -1,0 +1,93 @@
+import React from "react";
+// eslint-disable-next-line
+import {
+  Container,
+  Col,
+  Row,
+  FormGroup,
+  Form,
+  FormControl,
+  FloatingLabel,
+  Button,
+} from "react-bootstrap";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+function CreateAuthor() {
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    //  TODO: add author form post req url here
+    console.log("Submited");
+  };
+  return (
+    <Container>
+      <p className="lead text-center">Add Author</p>
+      <Form className="bg-light p-5 border rounded">
+        <FormGroup className="mb-4">
+          <Row>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="First Name"
+                className="mb-3"
+              >
+                <FormControl
+                  type="text"
+                  placeholder="Family Name"
+                  required
+                ></FormControl>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Family Name"
+                className="mb-3"
+              >
+                <FormControl
+                  type="text"
+                  placeholder="Enter Your Family Name"
+                  required
+                ></FormControl>
+              </FloatingLabel>
+            </Col>
+          </Row>
+        </FormGroup>
+        <FormGroup className="mb-3">
+          <Row>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Date of Birth"
+                className="mb-3"
+              >
+                <FormControl
+                  type="date"
+                  placeholder="Choose Your dob"
+                  required
+                ></FormControl>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Date of Death"
+                className="mb-3"
+              >
+                <FormControl
+                  type="date"
+                  placeholder="choose dod"
+                  required
+                ></FormControl>
+              </FloatingLabel>
+            </Col>
+          </Row>
+        </FormGroup>
+        <Button variant="primary" type="submit" onSubmit={formSubmitHandler}>
+          ADD
+        </Button>
+      </Form>
+    </Container>
+  );
+}
+
+export default CreateAuthor;
