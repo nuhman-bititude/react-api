@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   Col,
@@ -7,19 +7,19 @@ import {
   Form,
   FormControl,
   FloatingLabel,
-  Button,
 } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-function CreateAuthor() {
-  const formSubmitHandler = (e) => {
-    e.preventDefault();
-    //  TODO: add author form post req url here
-    console.log("Submited");
-  };
+function ViewAuthor({ responce }) {
+  const data = responce.data;
+  if (data != undefined) {
+    var date_of_birth = data.date_of_birth.split("T");
+    var date_of_death = data.date_of_death.split("T");
+  }
+  const [value, setValue] = useState("");
   return (
     <Container>
-      <p className="lead text-center">Add Author</p>
+      <p className="lead text-center">View Author</p>
       <Form className="bg-light p-5 border rounded">
         <FormGroup className="mb-4">
           <Row>
@@ -31,8 +31,12 @@ function CreateAuthor() {
               >
                 <FormControl
                   type="text"
-                  placeholder="Family Name"
-                  required
+                  placeholder="First Name"
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                  }}
+                  value={data === undefined ? "" : data.first_name}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
@@ -45,7 +49,8 @@ function CreateAuthor() {
                 <FormControl
                   type="text"
                   placeholder="Enter Your Family Name"
-                  required
+                  value={data === undefined ? "" : data.family_name}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
@@ -62,7 +67,8 @@ function CreateAuthor() {
                 <FormControl
                   type="date"
                   placeholder="Choose Your dob"
-                  required
+                  value={data === undefined ? "" : date_of_birth[0]}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
@@ -75,18 +81,16 @@ function CreateAuthor() {
                 <FormControl
                   type="date"
                   placeholder="choose dod"
-                  required
+                  value={data === undefined ? "" : date_of_death[0]}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
           </Row>
         </FormGroup>
-        <Button variant="primary" type="submit" onSubmit={formSubmitHandler}>
-          ADD
-        </Button>
       </Form>
     </Container>
   );
 }
 
-export default CreateAuthor;
+export default ViewAuthor;

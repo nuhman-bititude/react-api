@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-function CreateAuthor() {
+function DeleteAuthor() {
   const formSubmitHandler = (e) => {
     e.preventDefault();
     //  TODO: add author form post req url here
@@ -19,8 +19,11 @@ function CreateAuthor() {
   };
   return (
     <Container>
-      <p className="lead text-center">Add Author</p>
-      <Form className="bg-light p-5 border rounded">
+      <p className="lead text-center">Delete Author</p>
+      <Form
+        className="bg-light p-5 border rounded"
+        onSubmit={formSubmitHandler}
+      >
         <FormGroup className="mb-4">
           <Row>
             <Col>
@@ -31,8 +34,9 @@ function CreateAuthor() {
               >
                 <FormControl
                   type="text"
-                  placeholder="Family Name"
-                  required
+                  placeholder="First Name"
+                  value={""}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
@@ -44,8 +48,9 @@ function CreateAuthor() {
               >
                 <FormControl
                   type="text"
-                  placeholder="Enter Your Family Name"
-                  required
+                  placeholder="Family Name"
+                  value={""}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
@@ -62,7 +67,8 @@ function CreateAuthor() {
                 <FormControl
                   type="date"
                   placeholder="Choose Your dob"
-                  required
+                  value={""}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
@@ -75,18 +81,19 @@ function CreateAuthor() {
                 <FormControl
                   type="date"
                   placeholder="choose dod"
-                  required
+                  value={"2020-10-02"}
+                  readOnly
                 ></FormControl>
               </FloatingLabel>
             </Col>
           </Row>
         </FormGroup>
-        <Button variant="primary" type="submit" onSubmit={formSubmitHandler}>
-          ADD
+        <Button variant="primary" type="submit">
+          Delete
         </Button>
       </Form>
     </Container>
   );
 }
 
-export default CreateAuthor;
+export default DeleteAuthor;
