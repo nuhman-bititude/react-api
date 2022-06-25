@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+
 import {
   Container,
   Col,
@@ -35,6 +35,15 @@ function Search() {
       });
   }
 
+  // {
+  //   responce === "error" ? <NotFound /> : <ViewAuthor responce={responce} />;
+  // }
+  var view = "";
+  if (responce === "error") {
+    view = <NotFound />;
+  } else if (responce.data !== []) {
+    view = <ViewAuthor responce={responce} />;
+  }
   return (
     <>
       <Container>
@@ -69,7 +78,8 @@ function Search() {
           </Button>
         </Form>
       </Container>
-      {responce === "error" ? <NotFound /> : <ViewAuthor responce={responce} />}
+      {/* {responce === "error" ? <NotFound /> : <ViewAuthor responce={responce} />} */}
+      {view}
     </>
   );
 }
