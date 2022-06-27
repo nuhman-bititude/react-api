@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Container, ListGroup } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
 function ViewAllAuthors() {
-  const [responce, setResponce] = useState([]);
+  const [responces, setResponce] = useState([]);
+  const splitDate = (date) => {
+    let newDate = date.split("T");
+    return newDate[0];
+  };
+
   const fetchAll = () => {
     axios
       .get("https://local-library-task-api.herokuapp.com/authors")
       .then(function (res) {
-        console.log(res);
-        setResponce(res);
+        // console.log(res);
+        setResponce(res.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -21,22 +25,37 @@ function ViewAllAuthors() {
   }, []);
   return (
     <Container>
-      <div>{responce.data}</div>
-      {/* <Accordion defaultActiveKey="0">
-        <Accordion.Item> */}
-      {/*           
-          <Accordion.Header></Accordion.Header> */}
-      {/* <Accordion.Body>
-            <ListGroup>
-              <ListGroup.Item>{responce[0].id}</ListGroup.Item>
-              <ListGroup.Item>{responce[0].first_name}</ListGroup.Item>
-              <ListGroup.Item>{responce[0].family_name}</ListGroup.Item>
-              <ListGroup.Item>{responce[0].date_of_birth}</ListGroup.Item>
-              <ListGroup.Item>{responce[0].date_of_death}</ListGroup.Item>
-            </ListGroup>
-          </Accordion.Body> */}
-      {/* </Accordion.Item> */}
-      {/* </Accordion> */}
+      {responces.map((author) => (
+        <div key={author._id}>
+          <Accordion defaultActiveKey="0" style={{ width: "18rem" }}>
+            <Accordion.Item>
+              <Accordion.Header>
+                {" "}
+                <p className="lead"> {author.first_name}</p>
+              </Accordion.Header>
+              <Accordion.Body>
+                <ListGroup>
+                  <ListGroup.Item>
+                    ID: <b>{author._id}</b>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    First Name: <b>{author.first_name}</b>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    Family Name: <b>{author.family_name}</b>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    Date of Birth: <b>{splitDate(author.date_of_birth)}</b>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    Date of Death: <b>{splitDate(author.date_of_death)}</b>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </div>
+      ))}
     </Container>
   );
 }

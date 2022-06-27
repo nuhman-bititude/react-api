@@ -11,7 +11,6 @@ import {
   Button,
 } from "react-bootstrap";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import ViewAuthor from "./ViewAuthor";
 import NotFound from "../NotFound";
 function Search() {

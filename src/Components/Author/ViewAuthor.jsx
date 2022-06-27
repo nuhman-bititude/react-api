@@ -9,7 +9,6 @@ import {
   FloatingLabel,
 } from "react-bootstrap";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 function ViewAuthor({ responce }) {
   const data = responce.data;
   if (data != undefined) {

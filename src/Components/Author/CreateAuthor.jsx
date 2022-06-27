@@ -1,87 +1,100 @@
-import React from "react";
-import {
-  Container,
-  Col,
-  Row,
-  FormGroup,
-  Form,
-  FormControl,
-  FloatingLabel,
-  Button,
-} from "react-bootstrap";
+import React, { useState } from "react";
+import { Container, Col, Row, Form, Button } from "react-bootstrap";
 
-import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 function CreateAuthor() {
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    //  TODO: add author form post req url here
-    console.log("Submited");
+    console.log(e);
+    axios
+      .post("http://localhost:8000/author/create")
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+  const [first_name, setName] = useState("");
+  const [family_name, setFamily] = useState("");
+  const [dob, setDob] = useState("");
+  const [dod, setDod] = useState("");
   return (
     <Container>
       <p className="lead text-center">Add Author</p>
-      <Form className="bg-light p-5 border rounded">
-        <FormGroup className="mb-4">
+      <Form
+        className="bg-light p-5 border rounded"
+        onSubmit={formSubmitHandler}
+        // method="post"
+        // action="/author/create"
+      >
+        <Form.Group className="mb-4">
           <Row>
             <Col>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="First Name"
-                className="mb-3"
-              >
-                <FormControl
+              <Form.Floating className="mb-3">
+                <Form.Control
                   type="text"
-                  placeholder="Family Name"
+                  placeholder="first_name"
+                  name="first_name"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  value={first_name}
                   required
-                ></FormControl>
-              </FloatingLabel>
+                />
+                <label htmlFor="floatingInputCustom">First Name</label>
+              </Form.Floating>
             </Col>
             <Col>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Family Name"
-                className="mb-3"
-              >
-                <FormControl
+              <Form.Floating className="mb-3">
+                <Form.Control
                   type="text"
-                  placeholder="Enter Your Family Name"
+                  placeholder="family_name"
+                  name="family_name"
+                  onChange={(e) => {
+                    setFamily(e.target.value);
+                  }}
+                  value={family_name}
                   required
-                ></FormControl>
-              </FloatingLabel>
+                />
+                <label htmlFor="floatingInputCustom">Family Name</label>
+              </Form.Floating>
             </Col>
           </Row>
-        </FormGroup>
-        <FormGroup className="mb-3">
+        </Form.Group>
+        <Form.Group className="mb-3">
           <Row>
             <Col>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Date of Birth"
-                className="mb-3"
-              >
-                <FormControl
+              <Form.Floating className="mb-3">
+                <Form.Control
                   type="date"
-                  placeholder="Choose Your dob"
+                  name="date_of_birth"
+                  onChange={(e) => {
+                    setDob(e.target.value);
+                  }}
+                  value={dob}
                   required
-                ></FormControl>
-              </FloatingLabel>
+                />
+                <label htmlFor="floatingInputCustom">Date of Birth</label>
+              </Form.Floating>
             </Col>
             <Col>
-              <FloatingLabel
-                controlId="floatingInput"
-                label="Date of Death"
-                className="mb-3"
-              >
-                <FormControl
+              <Form.Floating className="mb-3">
+                <Form.Control
                   type="date"
-                  placeholder="choose dod"
+                  name="date_of_death"
+                  onChange={(e) => {
+                    setDod(e.target.value);
+                  }}
+                  value={dod}
                   required
-                ></FormControl>
-              </FloatingLabel>
+                />
+                <label htmlFor="floatingInputCustom">Date of Death</label>
+              </Form.Floating>
             </Col>
           </Row>
-        </FormGroup>
-        <Button variant="primary" type="submit" onSubmit={formSubmitHandler}>
+        </Form.Group>
+        <Button variant="primary" type="submit">
           ADD
         </Button>
       </Form>
