@@ -4,14 +4,15 @@ import Search from "./Search";
 import axios from "axios";
 import Success from "../Success";
 import NotFound from "../NotFound";
-function DeleteAuthor() {
+function Deletegenre() {
   const URL = "http://localhost:8000";
   const [id, setId] = useState("");
   var view = "";
   const formSubmitHandler = (e) => {
     e.preventDefault();
+    console.log(id);
     axios
-      .post(`${URL}/author/delete/${id}`)
+      .post(`${URL}/genre/delete/${id}`)
       .then((res) => {
         view = <Success />;
       })
@@ -19,12 +20,13 @@ function DeleteAuthor() {
         console.log(error);
         view = <NotFound />;
       });
+    view = <Success />;
   };
 
   return (
     <Container className="p-4">
-      <p className="lead text-center">Delete Author</p>
-      <Search setAuthorId={(id) => setId(id)} />
+      <p className="lead text-center">Delete Genre</p>
+      <Search setGenreId={(id) => setId(id)} />
       {view}
 
       <Button
@@ -37,4 +39,5 @@ function DeleteAuthor() {
     </Container>
   );
 }
-export default DeleteAuthor;
+
+export default Deletegenre;

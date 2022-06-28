@@ -1,0 +1,31 @@
+.route-link {
+  text-decoration: none;
+  padding: 8px;
+  color: black;
+  margin-top: 20px;
+}
+
+.nav {
+  background-color: rgba(red, green, blue, 0.75);
+}
+
+.nav-item {
+  padding: 2px;
+}
+
+.nav :hover {
+  color: rgb(117, 114, 112);
+}
+.nav :focus {
+  color: rgb(1, 1, 1);
+  background-color: rgb(120, 123, 121);
+  text-decoration: black;
+  border-radius: 15px;
+}
+
+.routes {
+  margin-top: 10px;
+}
+Route {
+  margin-top: 50px;
+}

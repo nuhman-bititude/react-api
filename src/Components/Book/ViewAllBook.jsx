@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Accordion, Container, ListGroup } from "react-bootstrap";
 import axios from "axios";
-
-function ViewAllAuthors() {
+function ViewAllBook() {
   const [responces, setResponce] = useState([]);
-  // const [list, setList] = useState("");
-  // const splitDate = (date) => {
-  //   let newDate = date.split("T");
-  //   return newDate[0];
-  // };
-
   const fetchAll = () => {
     axios
-      .get("http://localhost:8000/authors")
+      .get("http://localhost:8000/books")
       .then(function (res) {
         // console.log(res);
         setResponce(res.data);
@@ -26,34 +19,37 @@ function ViewAllAuthors() {
   }, []);
   return (
     <Container>
-      <p className="lead text-center">Authors</p>
+      <p className="lead text-center">Books</p>
       {responces === [] ? (
         ""
       ) : (
         <>
-          {responces.map((author) => (
-            <div key={author._id}>
-              <Accordion defaultActiveKey="0" style={{ width: "20rem" }}>
+          {responces.map((book) => (
+            <div key={book._id} style={{ width: "20rem" }}>
+              <Accordion defaultActiveKey="0" style={{ width: "25rem" }}>
                 <Accordion.Item>
                   <Accordion.Header>
-                    <p className="lead"> {author.first_name}</p>
+                    <p className="lead"> {book.title}</p>
                   </Accordion.Header>
                   <Accordion.Body>
                     <ListGroup as="ol" numbered>
                       <ListGroup.Item>
-                        ID: <b>{author._id}</b>
+                        id :<b> {book._id}</b>
                       </ListGroup.Item>
                       <ListGroup.Item>
-                        First Name: <b>{author.first_name}</b>
+                        Title :<b> {book.title}</b>
                       </ListGroup.Item>
                       <ListGroup.Item>
-                        Family Name: <b>{author.family_name}</b>
+                        Author :<b> {book.author}</b>
                       </ListGroup.Item>
                       <ListGroup.Item>
-                        Date of Birth: <b>{author.date_of_birth}</b>
+                        Genre : <b>{book.genre}</b>
                       </ListGroup.Item>
                       <ListGroup.Item>
-                        Date of Death: <b>{author.date_of_death}</b>
+                        ISBN : <b>{book.ISBN}</b>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        Summary : <b>{book.summary}</b>
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Body>
@@ -67,4 +63,4 @@ function ViewAllAuthors() {
   );
 }
 
-export default ViewAllAuthors;
+export default ViewAllBook;

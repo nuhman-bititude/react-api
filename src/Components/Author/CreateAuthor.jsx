@@ -2,18 +2,32 @@ import React, { useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 
 import axios from "axios";
+import Success from "../Success";
 function CreateAuthor() {
+  const URL = "http://localhost:8000";
+  var view = "";
   const formSubmitHandler = (e) => {
     e.preventDefault();
     console.log(e);
     axios
-      .post("http://localhost:8000/author/create")
-      .then((res) => {
-        console.log(res);
+      .post(`${URL}/author/create`, {
+        first_name: first_name,
+        family_name: family_name,
+        date_of_birth: dob,
+        date_of_death: dod,
       })
-      .catch((error) => {
-        console.log(error);
+      .then((res) => {
+        if (res.data === "success") {
+          view = <Success />;
+        }
+        setName("");
+        setFamily("");
+        setDob("");
+        setDod("");
       });
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   };
   const [first_name, setName] = useState("");
   const [family_name, setFamily] = useState("");
@@ -25,7 +39,7 @@ function CreateAuthor() {
       <Form
         className="bg-light p-5 border rounded"
         onSubmit={formSubmitHandler}
-        // method="post"
+        // method="POST"
         // action="/author/create"
       >
         <Form.Group className="mb-4">
@@ -98,6 +112,7 @@ function CreateAuthor() {
           ADD
         </Button>
       </Form>
+      {view}
     </Container>
   );
 }
