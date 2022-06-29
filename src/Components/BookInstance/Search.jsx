@@ -11,8 +11,8 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-import ViewAuthor from "./ViewAuthor";
 import NotFound from "../NotFound";
+import ViewBookInstance from "./ViewBookInstance";
 function Search(props) {
   const [search, setSearch] = useState();
   const [responce, setResponce] = useState([]);
@@ -22,7 +22,7 @@ function Search(props) {
     setLoading(true);
     e.preventDefault();
     axios
-      .get(`http://localhost:8000/author/${search}`)
+      .get(`http://localhost:8000/bookinstance/${search}`)
       .then(function (res) {
         if (res.data === "error") {
           setResponce("error");
@@ -34,29 +34,27 @@ function Search(props) {
         setResponce("error");
       });
     try {
-      props.setAuthorId(search);
+      props.setInstanceId(search);
     } catch (error) {
+      console.log(error);
       console.log("To be handled");
     }
+    setSearch("");
     setLoading(false);
   }
 
-  // {
-  //   responce === "error" ? <NotFound /> : <ViewAuthor responce={responce} />;
-  // }
   var view = "";
   if (responce === "error" || responce.data === null) {
     view = <NotFound />;
   } else if (responce.data !== undefined) {
-    view = <ViewAuthor responce={responce} id={search} />;
+    view = <ViewBookInstance responce={responce} id={search} />;
   } else if (responce.length === 0) {
     view = "";
   }
-
   return (
-    <>
+    <div>
       <Container>
-        <p className="lead text-center">Search Author</p>
+        <p className="lead text-center">Search Book Instance</p>
         <Form
           className="bg-light p-5 border rounded"
           onSubmit={formSubmitHandler}
@@ -89,7 +87,7 @@ function Search(props) {
         {loading ? <Spinner animation="border" /> : ""}
         {view}
       </Container>
-    </>
+    </div>
   );
 }
 

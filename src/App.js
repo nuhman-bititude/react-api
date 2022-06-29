@@ -2,6 +2,10 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Components/StyleSheets/css.css";
 import BookRoutes from "./Routes/BookRoutes";
+import CreateBookInstance from "./Components/BookInstance/CreateBookInstance";
+import ViewAllBookInstance from "./Components/BookInstance/ViewAllBookInstance";
+import ViewBookInstance from "./Components/BookInstance/ViewBookInstance";
+import Search from "./Components/BookInstance/Search";
 // import { Col, Row } from "react-bootstrap";
 
 // import AuthorRoutes from "./Routes/AuthorRoutes";
@@ -19,13 +23,18 @@ import BookRoutes from "./Routes/BookRoutes";
 // import Search from "./Components/Book/Search";
 // import DeleteBook from "./Components/Book/DeleteBook";
 // import UpdateBook from "./Components/Book/UpdateBook";
-
+import UpdateBookInstance from "./Components/BookInstance/UpdateBookInstance";
 function App() {
   return (
     <div className="App">
       {/* <AuthorRoutes></AuthorRoutes> */}
       {/* <GenreRoutes /> */}
-      <BookRoutes />
+      {/* <BookRoutes /> */}
+      {/* <CreateBookInstance /> */}
+      {/* <ViewAllBookInstance /> */}
+      {/* <ViewBookInstance /> */}
+      {/* <Search /> */}
+      <UpdateBookInstance />
     </div>
   );
 }
