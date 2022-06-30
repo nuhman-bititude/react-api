@@ -10,7 +10,7 @@ function Deletegenre() {
   const [view, setView] = useState("");
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(id);
+    // console.log(id);
     axios
       .post(`${URL}/genre/delete/${id}`)
       .then((res) => {
