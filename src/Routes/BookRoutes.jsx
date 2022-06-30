@@ -6,6 +6,7 @@ import ViewAllBook from "../Components/Book/ViewAllBook";
 import Search from "../Components/Book/Search";
 import DeleteBook from "../Components/Book/DeleteBook";
 import UpdateBook from "../Components/Book/UpdateBook";
+import Home from "../Components/Home";
 
 function BookRoutes() {
   return (
@@ -29,7 +30,7 @@ function BookRoutes() {
               </Link>
             </Nav.Item>
             <Nav.Item>
-              <Link to="/book" className="route-link">
+              <Link to="/book/view" className="route-link">
                 View Book
               </Link>
             </Nav.Item>
@@ -47,12 +48,13 @@ function BookRoutes() {
           </Nav>
         </Container>
         <Routes>
-          <Route exact path="/"></Route>
-          <Route exact path="/book/create" element={<CreateBook />}></Route>
-          <Route exact path="/books" element={<ViewAllBook />}></Route>
-          <Route exact path="/book" element={<Search />}></Route>
-          <Route exact path="/book/update" element={<UpdateBook />}></Route>
-          <Route exact path="/book/delete" element={<DeleteBook />}></Route>
+          <Route exact path="/" element={<Home />}></Route>
+
+          <Route path="/book/create" element={<CreateBook />}></Route>
+          <Route path="/books" element={<ViewAllBook />}></Route>
+          <Route path="/book/view" element={<Search />}></Route>
+          <Route path="/book/update" element={<UpdateBook />}></Route>
+          <Route path="/book/delete" element={<DeleteBook />}></Route>
         </Routes>
       </div>
     </Router>

@@ -11,7 +11,7 @@ import {
   Button,
 } from "react-bootstrap";
 import NotFound from "../NotFound";
-const URL = "http://localhost:8000";
+const URL = "https://local-library-task-api.herokuapp.com";
 
 function UpdateBookInstance() {
   const [search, setSearch] = useState("");

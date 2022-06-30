@@ -6,6 +6,7 @@ import UpdateAuthor from "../Components/Author/UpdateAuthor";
 import CreateAuthor from "../Components/Author/CreateAuthor";
 import ViewAllAuthors from "../Components/Author/ViewAllAuthors";
 import { Container, Nav } from "react-bootstrap";
+import Home from "../Components/Home";
 // import ViewAuthor from "../Components/Author/ViewAuthor";
 function AuthorRoutes() {
   return (
@@ -29,7 +30,7 @@ function AuthorRoutes() {
               </Link>
             </Nav.Item>
             <Nav.Item>
-              <Link to="/author" className="route-link">
+              <Link to="/author/view" className="route-link">
                 View Author
               </Link>
             </Nav.Item>
@@ -48,12 +49,12 @@ function AuthorRoutes() {
         </Container>
 
         <Routes>
-          <Route exact path="/"></Route>
-          <Route exact path="/author/create" element={<CreateAuthor />}></Route>
-          <Route exact path="/authors" element={<ViewAllAuthors />}></Route>
-          <Route exact path="/author" element={<Search />}></Route>
-          <Route exact path="/author/update" element={<UpdateAuthor />}></Route>
-          <Route exact path="/author/delete" element={<DeleteAuthor />}></Route>
+          <Route exact path="/" element={<Home />}></Route>
+          <Route path="/author/create" element={<CreateAuthor />}></Route>
+          <Route path="/authors" element={<ViewAllAuthors />}></Route>
+          <Route path="/author/view" element={<Search />}></Route>
+          <Route path="/author/update" element={<UpdateAuthor />}></Route>
+          <Route path="/author/delete" element={<DeleteAuthor />}></Route>
         </Routes>
       </div>
     </Router>

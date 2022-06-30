@@ -5,22 +5,23 @@ import axios from "axios";
 import Success from "../Success";
 import NotFound from "../NotFound";
 function DeleteBook() {
-  const URL = "http://localhost:8000";
+  const URL = "https://local-library-task-api.herokuapp.com";
+  const [view, setView] = useState("");
   const [id, setId] = useState("");
-  var view = "";
   const formSubmitHandler = (e) => {
     e.preventDefault();
     console.log(id);
     axios
       .post(`${URL}/book/delete/${id}`)
       .then((res) => {
-        view = <Success />;
+        setView(<Success />);
       })
       .catch((error) => {
         console.log(error);
-        view = <NotFound />;
+        setView(<NotFound />);
       });
-    view = <Success />;
+    setView(<Success />);
+    setId("");
   };
   return (
     <Container className="p-4">

@@ -23,7 +23,7 @@ function Search(props) {
     setLoading(true);
     e.preventDefault();
     axios
-      .get(`http://localhost:8000/genre/${search}`)
+      .get(`https://local-library-task-api.herokuapp.com/genre/${search}`)
       .then(function (res) {
         if (res.data === "error") {
           setResponce("error");

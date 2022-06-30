@@ -5,19 +5,21 @@ import axios from "axios";
 import Success from "../Success";
 import NotFound from "../NotFound";
 function DeleteAuthor() {
-  const URL = "http://localhost:8000";
+  const URL = "https://local-library-task-api.herokuapp.com";
   const [id, setId] = useState("");
-  var view = "";
+  const [view, setView] = useState("");
   const formSubmitHandler = (e) => {
     e.preventDefault();
     axios
       .post(`${URL}/author/delete/${id}`)
       .then((res) => {
-        view = <Success />;
+        setView(<Success />);
+        // view = <Success />;
       })
       .catch((error) => {
-        console.log(error);
-        view = <NotFound />;
+        // console.log(error);
+        // setView(<NotFound />);
+        // view = <NotFound />;
       });
   };
 

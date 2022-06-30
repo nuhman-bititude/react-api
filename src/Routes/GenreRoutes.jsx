@@ -6,6 +6,7 @@ import UpdateGenre from "../Components/Genre/UpdateGenre";
 import ViewAllgenres from "../Components/Genre/ViewAllgenres";
 import { Container, Nav } from "react-bootstrap";
 import Deletegenre from "../Components/Genre/Deletegenre";
+import Home from "../Components/Home";
 
 function GenreRoutes() {
   return (
@@ -29,7 +30,7 @@ function GenreRoutes() {
               </Link>
             </Nav.Item>
             <Nav.Item>
-              <Link to="/genre" className="route-link">
+              <Link to="/genre/view" className="route-link">
                 View Genre
               </Link>
             </Nav.Item>
@@ -48,12 +49,13 @@ function GenreRoutes() {
         </Container>
 
         <Routes>
-          <Route exact path="/"></Route>
-          <Route exact path="/genre/create" element={<CreateGenre />}></Route>
-          <Route exact path="/genres" element={<ViewAllgenres />}></Route>
-          <Route exact path="/genre" element={<Search />}></Route>
-          <Route exact path="/genre/update" element={<UpdateGenre />}></Route>
-          <Route exact path="/genre/delete" element={<Deletegenre />}></Route>
+          <Route exact path="/" element={<Home />}></Route>
+
+          <Route path="/genre/create" element={<CreateGenre />}></Route>
+          <Route path="/genres" element={<ViewAllgenres />}></Route>
+          <Route path="/genre/view" element={<Search />}></Route>
+          <Route path="/genre/update" element={<UpdateGenre />}></Route>
+          <Route path="/genre/delete" element={<Deletegenre />}></Route>
         </Routes>
       </div>
     </Router>

@@ -22,7 +22,9 @@ function Search(props) {
     setLoading(true);
     e.preventDefault();
     axios
-      .get(`http://localhost:8000/bookinstance/${search}`)
+      .get(
+        `https://local-library-task-api.herokuapp.com/bookinstance/${search}`
+      )
       .then(function (res) {
         if (res.data === "error") {
           setResponce("error");

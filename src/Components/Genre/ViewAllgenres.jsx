@@ -6,7 +6,7 @@ function ViewAllgenres() {
   const [responces, setResponce] = useState([]);
   const fetchAll = () => {
     axios
-      .get("http://localhost:8000/genres")
+      .get("https://local-library-task-api.herokuapp.com/genres")
       .then(function (res) {
         // console.log(res);
         setResponce(res.data);

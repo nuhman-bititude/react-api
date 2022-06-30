@@ -3,12 +3,14 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 
 import axios from "axios";
 import Success from "../Success";
+import NotFound from "../NotFound";
 function CreateAuthor() {
-  const URL = "http://localhost:8000";
-  var view = "";
+  const URL = "https://local-library-task-api.herokuapp.com";
+  const [view, setView] = useState("");
   const formSubmitHandler = (e) => {
+    setView("");
     e.preventDefault();
-    console.log(e);
+    // console.log(e);
     axios
       .post(`${URL}/author/create`, {
         first_name: first_name,
@@ -18,7 +20,7 @@ function CreateAuthor() {
       })
       .then((res) => {
         if (res.data === "success") {
-          view = <Success />;
+          setView(<Success />);
         }
         setName("");
         setFamily("");
@@ -52,6 +54,7 @@ function CreateAuthor() {
                   name="first_name"
                   onChange={(e) => {
                     setName(e.target.value);
+                    setView("");
                   }}
                   value={first_name}
                   required

@@ -5,7 +5,7 @@ import axios from "axios";
 import Success from "../Success";
 import NotFound from "../NotFound";
 function DeleteBookInstance() {
-  const URL = "http://localhost:8000";
+  const URL = "https://local-library-task-api.herokuapp.com";
   const [id, setId] = useState("");
   var view = "";
   const formSubmitHandler = (e) => {

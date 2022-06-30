@@ -13,7 +13,9 @@ import {
 
 import ViewAuthor from "./ViewAuthor";
 import NotFound from "../NotFound";
+import Success from "../Success";
 function Search(props) {
+  const [error, setError] = useState("");
   const [search, setSearch] = useState();
   const [responce, setResponce] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -22,25 +24,30 @@ function Search(props) {
     setLoading(true);
     e.preventDefault();
     axios
-      .get(`http://localhost:8000/author/${search}`)
+      .get(`https://local-library-task-api.herokuapp.com/author/${search}`)
       .then(function (res) {
-        if (res.data === "error") {
+        if (res.data === "error" || res.data === undefined) {
           setResponce("error");
+          setError(<NotFound />);
         } else {
           setResponce(res);
         }
       })
-      .catch(function (error) {
+      .catch(function (err) {
         setResponce("error");
       });
-    try {
-      props.setAuthorId(search);
-    } catch (error) {
-      console.log("To be handled");
+    if (responce === [] || responce.data === "") {
+      setResponce("error");
+      setLoading(false);
+    } else {
+      try {
+        props.setAuthorId(search);
+      } catch (error) {
+        console.log("To be handled");
+      }
+      setLoading(false);
     }
-    setLoading(false);
   }
-
   // {
   //   responce === "error" ? <NotFound /> : <ViewAuthor responce={responce} />;
   // }
@@ -88,6 +95,7 @@ function Search(props) {
         </Form>
         {loading ? <Spinner animation="border" /> : ""}
         {view}
+        {/* {error} */}
       </Container>
     </>
   );

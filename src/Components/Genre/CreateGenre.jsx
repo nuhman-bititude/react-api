@@ -4,8 +4,8 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import Success from "../Success";
 function CreateGenre() {
-  const URL = "http://localhost:8000";
-  var view = "";
+  const URL = "https://local-library-task-api.herokuapp.com";
+  const [view, setView] = useState("");
   const formSubmitHandler = (e) => {
     e.preventDefault();
     console.log(e);
@@ -15,7 +15,7 @@ function CreateGenre() {
       })
       .then((res) => {
         if (res.data === "success") {
-          view = <Success />;
+          setView(<Success />);
         }
         setGenre("");
       });

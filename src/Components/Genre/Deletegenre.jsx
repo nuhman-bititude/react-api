@@ -5,28 +5,34 @@ import axios from "axios";
 import Success from "../Success";
 import NotFound from "../NotFound";
 function Deletegenre() {
-  const URL = "http://localhost:8000";
+  const URL = "https://local-library-task-api.herokuapp.com";
   const [id, setId] = useState("");
-  var view = "";
+  const [view, setView] = useState("");
   const formSubmitHandler = (e) => {
     e.preventDefault();
     console.log(id);
     axios
       .post(`${URL}/genre/delete/${id}`)
       .then((res) => {
-        view = <Success />;
+        setView(<Success />);
       })
       .catch((error) => {
         console.log(error);
-        view = <NotFound />;
+        setView(<NotFound />);
+        // view = <NotFound />;
       });
-    view = <Success />;
+    setView(<Success />);
+    // view = <Success />;
   };
 
   return (
     <Container className="p-4">
       <p className="lead text-center">Delete Genre</p>
-      <Search setGenreId={(id) => setId(id)} />
+      <Search
+        setGenreId={(id) => {
+          setId(id);
+        }}
+      />
       {view}
 
       <Button

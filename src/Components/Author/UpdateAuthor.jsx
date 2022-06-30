@@ -13,7 +13,7 @@ import {
 import NotFound from "../NotFound";
 
 function UpdateAuthor() {
-  URL = "http://localhost:8000";
+  URL = "https://local-library-task-api.herokuapp.com";
   const [search, setSearch] = useState("");
   const [responce, setResponce] = useState([]);
   const [error, setError] = useState(false);

@@ -11,9 +11,11 @@ import {
   Button,
 } from "react-bootstrap";
 import NotFound from "../NotFound";
+import Success from "../Success";
 
 function UpdateGenre() {
-  URL = "http://localhost:8000";
+  URL = "https://local-library-task-api.herokuapp.com";
+  const [view, setView] = useState("");
   const [search, setSearch] = useState("");
   const [responce, setResponce] = useState([]);
   const [error, setError] = useState(false);
@@ -44,14 +46,16 @@ function UpdateGenre() {
         genre_name: genre_name,
       })
       .then((success) => {
-        console.log(success);
+        // console.log(success);
+        setView(<Success />);
         setError(false);
       })
       .catch((error) => {
         console.log(error);
+        setView(<NotFound />);
         setError(true);
       });
-    setSearch("");
+    // setSearch("");
   };
   return (
     <div>
@@ -75,6 +79,7 @@ function UpdateGenre() {
                     value={search}
                     onChange={(e) => {
                       setSearch(e.target.value);
+                      setView("");
                     }}
                     required
                   ></FormControl>
@@ -118,6 +123,7 @@ function UpdateGenre() {
                 </Col>
               </Row>
             </FormGroup>
+            {view}
             <Button
               variant="primary"
               type="submit"

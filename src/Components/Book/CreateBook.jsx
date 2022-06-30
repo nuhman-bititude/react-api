@@ -4,8 +4,8 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import Success from "../Success";
 function CreateBook() {
-  const URL = "http://localhost:8000";
-  var view = "";
+  const URL = "https://local-library-task-api.herokuapp.com";
+  const [view, setView] = useState("");
   const formSubmitHandler = (e) => {
     e.preventDefault();
     console.log(e);
@@ -19,7 +19,8 @@ function CreateBook() {
       })
       .then((res) => {
         if (res.data === "success") {
-          view = <Success />;
+          setView(<Success />);
+          // view = <Success />;
         }
         setAuthor("");
         setGenre("");
@@ -94,6 +95,7 @@ function CreateBook() {
                   value={author}
                   required
                 >
+                  <option value="">Choose One</option>
                   {authors.map((author) => (
                     <option key={author._id}>{author.first_name}</option>
                   ))}
@@ -115,6 +117,8 @@ function CreateBook() {
                   value={genre}
                   required
                 >
+                  <option value="">Choose One</option>
+
                   {genres.map((genre) => (
                     <option key={genre._id} value={genre.name}>
                       {genre.name}

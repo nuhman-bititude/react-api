@@ -12,7 +12,7 @@ function ViewAllAuthors() {
 
   const fetchAll = () => {
     axios
-      .get("http://localhost:8000/authors")
+      .get("https://local-library-task-api.herokuapp.com/authors")
       .then(function (res) {
         // console.log(res);
         setResponce(res.data);

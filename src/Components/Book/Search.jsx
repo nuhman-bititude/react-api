@@ -14,6 +14,7 @@ import NotFound from "../NotFound";
 import ViewBook from "./ViewBook";
 function Search(props) {
   var view = "";
+  const [error, setError] = useState("");
   const [search, setSearch] = useState();
   const [responce, setResponce] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ function Search(props) {
     setLoading(true);
     e.preventDefault();
     axios
-      .get(`http://localhost:8000/book/${search}`)
+      .get(`https://local-library-task-api.herokuapp.com/book/${search}`)
       .then(function (res) {
         if (res.data === "error") {
           setResponce("error");
@@ -78,6 +79,7 @@ function Search(props) {
                   value={search}
                   onChange={(e) => {
                     setSearch(e.target.value);
+                    setError("");
                   }}
                   required
                 ></FormControl>

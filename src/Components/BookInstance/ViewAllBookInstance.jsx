@@ -5,7 +5,7 @@ function ViewAllBookInstance() {
   const [responces, setResponce] = useState([]);
   const fetchAll = () => {
     axios
-      .get("http://localhost:8000/bookinstances")
+      .get("https://local-library-task-api.herokuapp.com/bookinstances")
       .then(function (res) {
         // console.log(res);
         setResponce(res.data);
