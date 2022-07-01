@@ -1,58 +1,62 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Components/StyleSheets/css.css";
-import { Route, Link, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import {
+  Route,
+  Link,
+  BrowserRouter as Router,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { Container, Nav, Navbar } from "react-bootstrap";
 
 import BookRoutes from "./Routes/BookRoutes";
 import AuthorRoutes from "./Routes/AuthorRoutes";
 import GenreRoutes from "./Routes/GenreRoutes";
 import BookInstancerRoutes from "./Routes/BookInstancerRoutes";
-import { useState } from "react";
+import Home from "./Components/Home";
+import Page404 from "./Components/Page404";
 function App() {
-  const [view, setView] = useState("");
   return (
     <div className="App">
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand>React-API</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link
-                onClick={() => {
-                  setView(<BookRoutes />);
-                }}
-              >
-                Books
-              </Nav.Link>
-              <Nav.Link
-                onClick={() => {
-                  setView(<GenreRoutes />);
-                }}
-              >
-                Genres
-              </Nav.Link>
-              <Nav.Link
-                onClick={() => {
-                  setView(<AuthorRoutes />);
-                }}
-              >
-                Authors
-              </Nav.Link>
-              <Nav.Link
-                onClick={() => {
-                  setView(<BookInstancerRoutes />);
-                }}
-              >
-                Book Instance
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Router>
+        <Navbar bg="secondary" sticky="top" className="mb-3">
+          <Container fluid>
+            <Navbar.Brand>
+              <p className="lead"> React API</p>
+            </Navbar.Brand>
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto mx-3 mb-4">
+                <Link to="/" className="route-link">
+                  Home
+                </Link>
+                <Link to="/book/home" className="route-link">
+                  Book
+                </Link>
+                <Link to="/author/home" className="route-link">
+                  Author
+                </Link>
+                <Link to="/genre/home" className="route-link">
+                  Genre
+                </Link>
+                <Link to="/bookinstance/home" className="route-link">
+                  Book Instance
+                </Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
 
-      {view}
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/react-api" element={<Navigate to="/" replace />} />
+          <Route path="/book/*" element={<BookRoutes />} />
+          <Route path="/author/*" element={<AuthorRoutes />} />
+          <Route path="/genre/*" element={<GenreRoutes />} />
+          <Route path="/bookinstance/*" element={<BookInstancerRoutes />} />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </Router>
     </div>
   );
 }

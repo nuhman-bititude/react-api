@@ -14,10 +14,10 @@ function Home() {
         /book/delete/:id
         <br />
         /book/update/:id
-        <br />
-        <br />
-        <br />
       </p>
+      <br />
+      <br />
+      <br />
       <p className="display-4">Author Routes</p>
       <p className="lead">
         /author/create
