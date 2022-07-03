@@ -1,125 +1,53 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Col,
-  Row,
-  FormGroup,
-  Form,
-  FormControl,
-  FloatingLabel,
-  Button,
-} from "react-bootstrap";
-import NotFound from "../NotFound";
-const URL = "https://local-library-task-api.herokuapp.com";
-
-function UpdateBookInstance() {
-  const [search, setSearch] = useState("");
-  const [responce, setResponce] = useState([]);
-  const [error, setError] = useState(false);
+import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import { updateBookInstance, fetchOne } from "../../Services/bookinstance";
+import ViewAllBookInstance from "./ViewAllBookInstance";
+function UpdateBookInstance({ id }) {
+  const [instanceView, setInstanceView] = useState(false);
   const [book, setBook] = useState("");
   const [imprint, setImprint] = useState("");
   const [status, setStatus] = useState("");
   const [due_back, setDue] = useState("");
-  const [books, setBooks] = useState([]);
-  const findBooks = () => {
-    axios
-      .get(`${URL}/books`)
-      .then(function (res) {
-        setBooks(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-  useEffect(() => {
-    findBooks();
-  }, []);
-  const formSubmitHandler = (e) => {
-    e.preventDefault();
-    axios
-      .get(`${URL}/bookinstance/${search}`)
-      .then((res) => {
-        setResponce(res);
+  const findInstance = async () => {
+    try {
+      await fetchOne({ id }).then((res) => {
         setBook(res.data.book);
         setImprint(res.data.imprint);
         setStatus(res.data.status);
         let due = res.data.due_back.split("T");
         setDue(due[0]);
-        if (res.data === "error") {
-          setError(true);
-        } else {
-          setError(false);
-        }
-      })
-      .catch((error) => {
-        setError(true);
-        console.log(error);
       });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const updateSubmitHandler = (e) => {
+  useEffect((id) => {
+    findInstance(id);
+  }, []);
+
+  const updateSubmitHandler = async (e) => {
     e.preventDefault();
-    axios
-      .post(`${URL}/bookinstance/update/${search}`, {
+    try {
+      await updateBookInstance({
+        id: id,
         book: book,
         imprint: imprint,
         status: status,
         due: due_back,
-      })
-      .then((success) => {
-        console.log(success);
-        setError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
       });
-    setSearch("");
+      setInstanceView(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
-      <Container>
-        <p className="lead text-center">Search Book Instance</p>
-        <Form
-          className="bg-light p-5 border rounded"
-          onSubmit={formSubmitHandler}
-        >
-          <FormGroup className="mb-4">
-            <Row>
-              <Col>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Enter ID"
-                  className="mb-3"
-                >
-                  <FormControl
-                    type="text"
-                    placeholder="Enter Id"
-                    value={search}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                    }}
-                    required
-                  ></FormControl>
-                </FloatingLabel>
-              </Col>
-            </Row>
-          </FormGroup>
-          <Button variant="primary" type="submit">
-            Search
-          </Button>
-        </Form>
-        {error ? <NotFound /> : ""}
-      </Container>
-      {search.length < 20 || error ? (
-        ""
+      {instanceView ? (
+        <ViewAllBookInstance />
       ) : (
         <Container>
           <p className="lead text-center">Update Author</p>
-          <Form
-            className="bg-light p-5 border rounded"
-            onSubmit={formSubmitHandler}
-          >
+          <Form className="bg-light p-5 border rounded">
             <Form.Group className="mb-4">
               <Row>
                 <Col>

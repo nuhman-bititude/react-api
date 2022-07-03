@@ -1,10 +1,8 @@
 import React from "react";
-import { Route, Link, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, Link, Routes } from "react-router-dom";
 import CreateGenre from "../Components/Genre/CreateGenre";
-import Search from "../Components/Genre/Search";
 import ViewAllgenres from "../Components/Genre/ViewAllgenres";
 import { Container, Nav } from "react-bootstrap";
-import Deletegenre from "../Components/Genre/Deletegenre";
 import Page404 from "../Components/Page404";
 import GenreHome from "../Pages/GenreHome";
 
@@ -28,17 +26,6 @@ function GenreRoutes() {
               Genres
             </Link>
           </Nav.Item>
-          <Nav.Item>
-            <Link to="view" className="route-link">
-              View Genre
-            </Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Link to="delete" className="route-link">
-              Delete Genre
-            </Link>
-          </Nav.Item>
-          <Nav.Item></Nav.Item>
         </Nav>
       </Container>
 
@@ -46,8 +33,6 @@ function GenreRoutes() {
         <Route exact path="/home" element={<GenreHome />}></Route>
         <Route path="/create" element={<CreateGenre />}></Route>
         <Route path="/genres" element={<ViewAllgenres />}></Route>
-        <Route path="/view" element={<Search />}></Route>
-        <Route path="/delete" element={<Deletegenre />}></Route>
         <Route path="*" element={<Page404 />} />
       </Routes>
     </div>

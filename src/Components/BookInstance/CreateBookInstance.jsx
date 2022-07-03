@@ -1,49 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
-
-import axios from "axios";
-import Success from "../Success";
+import { createBookInstance } from "../../Services/bookinstance";
+import { fetchAll } from "../../Services/book";
 function CreateBookInstance() {
-  const URL = "https://local-library-task-api.herokuapp.com";
-  var view = "";
-  const formSubmitHandler = (e) => {
-    e.preventDefault();
-    console.log(e);
-    axios
-      .post(`${URL}/bookinstance/create`, {
-        book: book,
-        imprint: imprint,
-        status: status,
-        due: due_back,
-      })
-      .then((res) => {
-        if (res.data === "success") {
-          view = <Success />;
-        }
-        setBook("");
-        setDue("");
-        setStatus("");
-        setImprint("");
-      });
-  };
-  const findBooks = () => {
-    axios
-      .get(`${URL}/books`)
-      .then(function (res) {
-        setBooks(res.data);
-        // console.log(books);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
   const [imprint, setImprint] = useState("");
   const [status, setStatus] = useState("");
   const [due_back, setDue] = useState("");
   const [book, setBook] = useState("");
-
   const [books, setBooks] = useState([]);
+  const formSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await createBookInstance({
+        book: book,
+        imprint: imprint,
+        status: status,
+        due: due_back,
+      });
+      setBook("");
+      setImprint("");
+      setStatus("");
+      setDue("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const findBooks = async () => {
+    try {
+      await fetchAll().then((res) => {
+        setBooks(res.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     findBooks();
   }, []);
@@ -92,7 +83,7 @@ function CreateBookInstance() {
                   <option value="Reserved">Reserved</option>
                   <option value="Maintenance">Maintenance</option>
                 </Form.Select>
-                <label htmlFor="floatingInputCustom">Author</label>
+                <label htmlFor="floatingInputCustom">Status</label>
               </Form.Floating>
             </Col>
           </Row>

@@ -1,48 +1,41 @@
 import React, { useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 
-import axios from "axios";
 import Success from "../Success";
-import NotFound from "../NotFound";
+import { createAuthor } from "../../Services/author";
 function CreateAuthor() {
-  const URL = "https://local-library-task-api.herokuapp.com";
-  const [view, setView] = useState("");
-  const formSubmitHandler = (e) => {
-    setView("");
+  const formSubmitHandler = async (e) => {
     e.preventDefault();
-    // console.log(e);
-    axios
-      .post(`${URL}/author/create`, {
+    try {
+      await createAuthor({
         first_name: first_name,
         family_name: family_name,
         date_of_birth: dob,
         date_of_death: dod,
-      })
-      .then((res) => {
-        if (res.data === "success") {
-          setView(<Success />);
-        }
-        setName("");
-        setFamily("");
-        setDob("");
-        setDod("");
       });
-    // .catch((error) => {
-    //   console.log(error);
-    // });
+      setSuccess(true);
+      resetAll();
+    } catch (error) {
+      console.log(error);
+    }
   };
+  const [success, setSuccess] = useState(false);
   const [first_name, setName] = useState("");
   const [family_name, setFamily] = useState("");
   const [dob, setDob] = useState("");
   const [dod, setDod] = useState("");
+  const resetAll = () => {
+    setName("");
+    setFamily("");
+    setDob("");
+    setDod("");
+  };
   return (
     <Container>
       <p className="lead text-center">Add Author</p>
       <Form
         className="bg-light p-5 border rounded"
         onSubmit={formSubmitHandler}
-        // method="POST"
-        // action="/author/create"
       >
         <Form.Group className="mb-4">
           <Row>
@@ -53,8 +46,8 @@ function CreateAuthor() {
                   placeholder="first_name"
                   name="first_name"
                   onChange={(e) => {
+                    setSuccess(false);
                     setName(e.target.value);
-                    setView("");
                   }}
                   value={first_name}
                   required
@@ -111,11 +104,11 @@ function CreateAuthor() {
             </Col>
           </Row>
         </Form.Group>
+        {success ? <Success /> : ""}
         <Button variant="primary" type="submit">
           ADD
         </Button>
       </Form>
-      {view}
     </Container>
   );
 }

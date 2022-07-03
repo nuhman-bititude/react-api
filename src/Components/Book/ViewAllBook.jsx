@@ -1,29 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Container, ListGroup } from "react-bootstrap";
-import axios from "axios";
+import {
+  Accordion,
+  Container,
+  ListGroup,
+  Button,
+  Spinner,
+} from "react-bootstrap";
+import { fetchAll, deleteBook } from "../../Services/book";
+import UpdateBook from "./UpdateBook";
 function ViewAllBook() {
   const [responces, setResponce] = useState([]);
-  const fetchAll = () => {
-    axios
-      .get("https://local-library-task-api.herokuapp.com/books")
-      .then(function (res) {
-        // console.log(res);
+  const [updateView, setUpdateView] = useState(false);
+  const [id, setId] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const updateHandler = (id) => {
+    setId(id);
+    setUpdateView(true);
+  };
+  const deleteHandler = async (id) => {
+    setDeleting(true);
+    try {
+      await deleteBook({ id });
+      setDeleting(false);
+      fetchBooks();
+    } catch (error) {
+      console.log(error);
+      setDeleting(false);
+    }
+  };
+  const fetchBooks = async () => {
+    try {
+      await fetchAll().then((res) => {
         setResponce(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
       });
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
-    fetchAll();
+    fetchBooks();
   }, []);
   return (
     <Container>
-      <p className="lead text-center">Books</p>
-      {responces === [] ? (
-        ""
+      {updateView ? (
+        <UpdateBook id={id} />
       ) : (
         <>
+          <p className="lead text-center">Books</p>
           {responces.map((book) => (
             <div key={book._id} style={{ width: "20rem" }}>
               <Accordion defaultActiveKey="0" style={{ width: "25rem" }}>
@@ -50,6 +73,29 @@ function ViewAllBook() {
                       </ListGroup.Item>
                       <ListGroup.Item>
                         Summary : <b>{book.summary}</b>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Button
+                          className="mx-5"
+                          onClick={() => {
+                            updateHandler(book._id);
+                          }}
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => {
+                            deleteHandler(book._id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                        {deleting ? (
+                          <Spinner animation="border" variant="danger" />
+                        ) : (
+                          ""
+                        )}
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Body>

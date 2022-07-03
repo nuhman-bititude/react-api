@@ -1,53 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
-
-import axios from "axios";
-import Success from "../Success";
+import { createBook } from "../../Services/book";
+import { fetchAll as AuthorFetch } from "../../Services/author";
+import { fetchAll as GenreFetch } from "../../Services/genre";
 function CreateBook() {
-  const URL = "https://local-library-task-api.herokuapp.com";
-  const [view, setView] = useState("");
-  const formSubmitHandler = (e) => {
+  const formSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(e);
-    axios
-      .post(`${URL}/book/create`, {
+    try {
+      await createBook({
         title: title,
         author: author,
         summary: summary,
         isbn: isbn,
         genre: genre,
-      })
-      .then((res) => {
-        if (res.data === "success") {
-          setView(<Success />);
-          // view = <Success />;
-        }
-        setAuthor("");
-        setGenre("");
-        setTitle("");
-        setIsbn("");
-        setSummary("");
       });
+      setAuthor("");
+      setGenre("");
+      setIsbn("");
+      setSummary("");
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const findAuthors = () => {
-    axios
-      .get(`${URL}/authors`)
-      .then(function (res) {
+  const findAuthors = async () => {
+    try {
+      await AuthorFetch().then((res) => {
         setAuthors(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
       });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const findGenres = () => {
-    axios
-      .get(`${URL}/genres`)
-      .then(function (res) {
+  const findGenres = async () => {
+    try {
+      await GenreFetch().then((res) => {
         setGenres(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
       });
+    } catch (error) {}
   };
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -111,7 +100,6 @@ function CreateBook() {
                   aria-label="Default select example"
                   name="title"
                   onChange={(e) => {
-                    console.log(genre);
                     setGenre(e.target.value);
                   }}
                   value={genre}
@@ -160,7 +148,6 @@ function CreateBook() {
           ADD
         </Button>
       </Form>
-      {view}
     </Container>
   );
 }

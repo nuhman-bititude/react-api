@@ -1,21 +1,10 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Col,
-  Row,
-  FormGroup,
-  Form,
-  FormControl,
-  FloatingLabel,
-  Button,
-} from "react-bootstrap";
-import NotFound from "../NotFound";
-function UpdateBook() {
-  URL = "https://local-library-task-api.herokuapp.com";
-  const [search, setSearch] = useState("");
-  const [responce, setResponce] = useState([]);
-  const [error, setError] = useState(false);
+import { fetchAll as AuthorFetch } from "../../Services/author";
+import { fetchAll as GenreFetch } from "../../Services/genre";
+import { fetchOne, updateBook } from "../../Services/book";
+import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import ViewAllBook from "./ViewAllBook";
+function UpdateBook({ id }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [summary, setSummary] = useState("");
@@ -23,116 +12,67 @@ function UpdateBook() {
   const [genre, setGenre] = useState("");
   const [authors, setAuthors] = useState([]);
   const [genres, setGenres] = useState([]);
-  const findAuthors = () => {
-    axios
-      .get(`${URL}/authors`)
-      .then(function (res) {
+  const [bookView, setBookView] = useState(false);
+  const findBook = async () => {
+    try {
+      await fetchOne({ id }).then((res) => {
+        setTitle(res.data.title);
+        setAuthor(res.data.author);
+        setSummary(res.data.summary);
+        setIsbn(res.data.ISBN);
+        setGenre(res.data.genre);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const findAuthors = async () => {
+    try {
+      await AuthorFetch().then((res) => {
         setAuthors(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
       });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const findGenres = () => {
-    axios
-      .get(`${URL}/genres`)
-      .then(function (res) {
+  const findGenres = async () => {
+    try {
+      await GenreFetch().then((res) => {
         setGenres(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
       });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  useEffect(() => {
+  useEffect((id) => {
+    findBook(id);
     findAuthors();
     findGenres();
   }, []);
-  const formSubmitHandler = (e) => {
+  const updateSubmitHandler = async (e) => {
     e.preventDefault();
-    axios
-      .get(`${URL}/book/${search}`)
-      .then((res) => {
-        setResponce(res);
-        setTitle(res.data.title);
-        setAuthor(res.data.author);
-        setGenre(res.data.genre);
-        setIsbn(res.data.ISBN);
-        setSummary(res.data.summary);
-        if (res.data === "error") {
-          setError(true);
-        } else {
-          setError(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
-      });
-  };
-  const updateSubmitHandler = (e) => {
-    e.preventDefault();
-    axios
-      .post(`${URL}/book/update/${search}`, {
+    try {
+      await updateBook({
+        id: id,
         title: title,
         author: author,
         summary: summary,
         isbn: isbn,
         genre: genre,
-      })
-      .then((success) => {
-        console.log(success);
-        setError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
       });
-    setSearch("");
+      setBookView(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
-      <Container>
-        <p className="lead text-center">Search Book</p>
-        <Form
-          className="bg-light p-5 border rounded"
-          onSubmit={formSubmitHandler}
-        >
-          <FormGroup className="mb-4">
-            <Row>
-              <Col>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Enter ID"
-                  className="mb-3"
-                >
-                  <FormControl
-                    type="text"
-                    placeholder="Enter Id"
-                    value={search}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                    }}
-                    required
-                  ></FormControl>
-                </FloatingLabel>
-              </Col>
-            </Row>
-          </FormGroup>
-          <Button variant="primary" type="submit">
-            Search
-          </Button>
-        </Form>
-        {error ? <NotFound /> : ""}
-      </Container>
-      {search.length < 20 || error ? (
-        ""
+      {bookView ? (
+        <ViewAllBook />
       ) : (
         <Container>
           <p className="lead text-center">Update Author</p>
-          <Form
-            className="bg-light p-5 border rounded"
-            onSubmit={formSubmitHandler}
-          >
+          <Form className="bg-light p-5 border rounded">
             <Form.Group className="mb-4">
               <Row>
                 <Col>

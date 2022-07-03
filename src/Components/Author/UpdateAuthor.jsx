@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Col,
@@ -10,99 +9,54 @@ import {
   FloatingLabel,
   Button,
 } from "react-bootstrap";
-import NotFound from "../NotFound";
-
-function UpdateAuthor() {
-  URL = "https://local-library-task-api.herokuapp.com";
-  const [search, setSearch] = useState("");
-  const [responce, setResponce] = useState([]);
-  const [error, setError] = useState(false);
+import { fetchOne, updateAuthor } from "../../Services/author";
+import ViewAllAuthors from "./ViewAllAuthors";
+function UpdateAuthor({ id }) {
+  const [authorView, setAuthorView] = useState(false);
   const [first_name, setFirstname] = useState("");
   const [family_name, setFamilyname] = useState("");
   const [date_of_birth, setDob] = useState("");
-  const [date_of_death, setDod] = useState();
-
-  const formSubmitHandler = (e) => {
-    e.preventDefault();
-    axios
-      .get(`${URL}/author/${search}`)
-      .then((res) => {
-        setResponce(res);
+  const [date_of_death, setDod] = useState("");
+  const fetchAuthor = async (id) => {
+    try {
+      await fetchOne({ id }).then((res) => {
         setFirstname(res.data.first_name);
         setFamilyname(res.data.family_name);
         let dob = res.data.date_of_birth.split("T");
         let dod = res.data.date_of_death.split("T");
         setDob(dob[0]);
         setDod(dod[0]);
-        setError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
       });
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const updateSubmitHandler = (e) => {
+  const updateSubmitHandler = async (e) => {
     e.preventDefault();
-    axios
-      .post(`${URL}/author/update/${search}`, {
+    try {
+      await updateAuthor({
+        id: id,
         first_name: first_name,
         family_name: family_name,
         date_of_birth: date_of_birth,
         date_of_death: date_of_death,
-      })
-      .then((success) => {
-        console.log(success);
-        setError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true);
       });
+      setAuthorView(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  useEffect((id) => {
+    fetchAuthor(id);
+  }, []);
   return (
-    <Container>
-      <Container>
-        <p className="lead text-center">Search Author</p>
-        <Form
-          className="bg-light p-5 border rounded"
-          onSubmit={formSubmitHandler}
-        >
-          <FormGroup className="mb-4">
-            <Row>
-              <Col>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Enter ID"
-                  className="mb-3"
-                >
-                  <FormControl
-                    type="text"
-                    placeholder="Enter Id"
-                    value={search}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                    }}
-                    required
-                  ></FormControl>
-                </FloatingLabel>
-              </Col>
-            </Row>
-          </FormGroup>
-          <Button variant="primary" type="submit">
-            Search
-          </Button>
-        </Form>
-        {error ? <NotFound /> : ""}
-      </Container>
-      {search.length < 20 || error ? (
-        ""
+    <>
+      {authorView ? (
+        <ViewAllAuthors />
       ) : (
         <Container>
           <p className="lead text-center">Update Author</p>
-          <Form
-            className="bg-light p-5 border rounded"
-            onSubmit={formSubmitHandler}
-          >
+          <Form className="bg-light p-5 border rounded">
             <FormGroup className="mb-4">
               <Row>
                 <Col>
@@ -189,7 +143,7 @@ function UpdateAuthor() {
           </Form>
         </Container>
       )}
-    </Container>
+    </>
   );
 }
 

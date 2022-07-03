@@ -8,41 +8,57 @@ import {
   Col,
   Spinner,
 } from "react-bootstrap";
-import axios from "axios";
+import { fetchAll, deleteGenre } from "../../Services/genre";
+import Page404 from "../Page404";
 import UpdateGenre from "./UpdateGenre";
-
 function ViewAllgenres() {
   const [updateView, setUpdateView] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [responces, setResponce] = useState([]);
   const [id, setId] = useState();
-  const fetchAll = () => {
-    axios
-      .get("https://local-library-task-api.herokuapp.com/genres")
-      .then(function (res) {
-        // console.log(res);
+  const fetchGenre = async () => {
+    await fetchAll()
+      .then((res) => {
         setResponce(res.data);
+        setError(false);
+        setLoading(false);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        setError(true);
       });
   };
   const updateHandler = (id) => {
     setUpdateView(true);
     setId(id);
   };
+  const deleteHandler = async (id) => {
+    setDeleting(true);
+    try {
+      await deleteGenre({ id });
+      fetchGenre();
+      setDeleting(false);
+      setError(false);
+    } catch (error) {
+      setError(true);
+      setDeleting(false);
+    }
+  };
   useEffect(() => {
-    fetchAll();
-    setLoading(false);
+    fetchGenre();
   }, []);
   return (
     <Container>
-      <p className="lead text-center">Genres</p>
       {loading ? <Spinner animation="border" role="status" /> : ""}
-      {responces === [] ? (
-        ""
+      {error ? <Page404 /> : ""}
+      {updateView ? (
+        <UpdateGenre id={id} />
       ) : (
         <>
+          <p className="lead text-center">Genres</p>
           <Row>
             <Col>
               {responces.map((genre) => (
@@ -69,7 +85,19 @@ function ViewAllgenres() {
                             >
                               Update
                             </Button>
-                            <Button variant="danger"> Delete </Button>
+                            <Button
+                              variant="danger"
+                              onClick={() => {
+                                deleteHandler(genre._id);
+                              }}
+                            >
+                              Delete
+                            </Button>
+                            {deleting ? (
+                              <Spinner animation="border" variant="danger" />
+                            ) : (
+                              ""
+                            )}
                           </ListGroup.Item>
                         </ListGroup>
                       </Accordion.Body>
@@ -78,7 +106,7 @@ function ViewAllgenres() {
                 </div>
               ))}
             </Col>
-            <Col>{updateView ? <UpdateGenre id={id} /> : ""}</Col>
+            {/* <Col>{updateView ? <UpdateGenre id={id} /> : ""}</Col> */}
           </Row>
         </>
       )}

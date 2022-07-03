@@ -1,29 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Container, ListGroup } from "react-bootstrap";
-import axios from "axios";
+import {
+  Accordion,
+  Container,
+  ListGroup,
+  Spinner,
+  Button,
+} from "react-bootstrap";
+import { fetchAll, deleteBookInstance } from "../../Services/bookinstance";
+import UpdateBookInstance from "./UpdateBookInstance";
 function ViewAllBookInstance() {
+  const [updateView, setUpdateView] = useState(false);
+  const [id, setId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [responces, setResponce] = useState([]);
-  const fetchAll = () => {
-    axios
-      .get("https://local-library-task-api.herokuapp.com/bookinstances")
-      .then(function (res) {
-        // console.log(res);
+  const updateHandler = (id) => {
+    setUpdateView(true);
+    setId(id);
+  };
+  const deleteHandler = async (id) => {
+    setDeleting(true);
+    try {
+      await deleteBookInstance({ id });
+      setDeleting(false);
+      fetchBookInstance();
+    } catch (error) {
+      console.log(error);
+      setDeleting(false);
+    }
+  };
+  const fetchBookInstance = async () => {
+    try {
+      setLoading(true);
+      await fetchAll().then((res) => {
         setResponce(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
+        setLoading(false);
       });
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
   useEffect(() => {
-    fetchAll();
+    fetchBookInstance();
   }, []);
   return (
     <Container>
-      <p className="lead text-center">Books</p>
-      {responces === [] ? (
-        ""
+      {loading ? <Spinner animation="border" /> : ""}
+      {updateView ? (
+        <UpdateBookInstance id={id} />
       ) : (
         <>
+          <p className="lead text-center">Books</p>
           {responces.map((bookinstance) => (
             <div key={bookinstance._id} style={{ width: "20rem" }}>
               <Accordion defaultActiveKey="0" style={{ width: "25rem" }}>
@@ -47,6 +75,30 @@ function ViewAllBookInstance() {
                       </ListGroup.Item>
                       <ListGroup.Item>
                         Due back : <b>{bookinstance.due_back}</b>
+                      </ListGroup.Item>
+
+                      <ListGroup.Item>
+                        <Button
+                          className="mx-5"
+                          onClick={() => {
+                            updateHandler(bookinstance._id);
+                          }}
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => {
+                            deleteHandler(bookinstance._id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                        {deleting ? (
+                          <Spinner animation="border" variant="danger" />
+                        ) : (
+                          ""
+                        )}
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Body>

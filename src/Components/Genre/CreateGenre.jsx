@@ -1,34 +1,26 @@
 import React, { useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
-
-import axios from "axios";
+import { createGenre } from "../../Services/genre";
 import Success from "../Success";
 function CreateGenre() {
-  const URL = "https://local-library-task-api.herokuapp.com";
-  const [view, setView] = useState("");
+  const [genre_name, setGenre] = useState("");
+  const [success, setSuccess] = useState(false);
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(e);
-    axios
-      .post(`${URL}/genre/create`, {
-        genre_name: genre_name,
-      })
-      .then((res) => {
-        if (res.data === "success") {
-          setView(<Success />);
-        }
-        setGenre("");
-      });
+    try {
+      createGenre({ genre_name: genre_name });
+      setSuccess(true);
+    } catch (error) {
+      setSuccess(false);
+    }
+    setGenre("");
   };
-  const [genre_name, setGenre] = useState("");
   return (
     <Container>
       <p className="lead text-center">Add Genre</p>
       <Form
         className="bg-light p-5 border rounded"
         onSubmit={formSubmitHandler}
-        // method="POST"
-        // action="/author/create"
       >
         <Form.Group className="mb-4">
           <Row>
@@ -39,6 +31,7 @@ function CreateGenre() {
                   placeholder="first_name"
                   name="first_name"
                   onChange={(e) => {
+                    setSuccess(false);
                     setGenre(e.target.value);
                   }}
                   value={genre_name}
@@ -49,11 +42,11 @@ function CreateGenre() {
             </Col>
           </Row>
         </Form.Group>
+        {success ? <Success /> : ""}
         <Button variant="primary" type="submit">
           ADD
         </Button>
       </Form>
-      {view}
     </Container>
   );
 }

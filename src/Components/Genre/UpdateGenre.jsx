@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -10,71 +9,80 @@ import {
   FloatingLabel,
   Button,
 } from "react-bootstrap";
-import NotFound from "../NotFound";
+import { updateGenre, fetchOne } from "../../Services/genre";
 import Success from "../Success";
+import NotFound from "../NotFound";
+import ViewAllgenres from "./ViewAllgenres";
 
 function UpdateGenre({ id }) {
-  URL = "https://local-library-task-api.herokuapp.com";
-  const [view, setView] = useState("");
-  const [search, setSearch] = useState("");
-  const [responce, setResponce] = useState([]);
-  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [genre_name, setGenre] = useState("");
-
+  const [genreView, setGenreView] = useState(false);
   const updateSubmitHandler = (e) => {
     e.preventDefault();
-    axios
-      .post(`${URL}/genre/update/${id}`, {
-        genre_name: genre_name,
-      })
-      .then((success) => {
-        // console.log(success);
-        setView(<Success />);
-        setError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setView(<NotFound />);
-        setError(true);
-      });
-    // setSearch("");
+    try {
+      updateGenre({ id: id, genre_name: genre_name });
+      setSuccess(true);
+    } catch (error) {
+      console.log(error);
+      setSuccess(false);
+    }
+    setGenreView(true);
   };
-  useEffect(() => {}, []);
+  const fetchGenre = async (id) => {
+    try {
+      await fetchOne({ id }).then((res) => {
+        setGenre(res.data.name);
+      });
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchGenre(id);
+  }, []);
   return (
     <div>
-      <Container>
-        <p className="lead text-center">Update Author</p>
-        <Form
-          className="bg-light p-5 border rounded"
-          // onSubmit={formSubmitHandler}
-        >
-          <FormGroup className="mb-4">
-            <Row>
-              <Col>
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Genre Name"
-                  className="mb-3"
-                >
-                  <FormControl
-                    type="text"
-                    placeholder="Genre Name"
-                    value={genre_name}
-                    onChange={(e) => {
-                      setGenre(e.target.value);
-                    }}
-                    required
-                  ></FormControl>
-                </FloatingLabel>
-              </Col>
-            </Row>
-          </FormGroup>
-          {view}
-          <Button variant="primary" type="submit" onClick={updateSubmitHandler}>
-            UPDATE
-          </Button>
-        </Form>
-      </Container>
+      {genreView ? (
+        <ViewAllgenres />
+      ) : (
+        <Container>
+          <p className="lead text-center">Update Author</p>
+          <Form
+            className="bg-light p-5 border rounded"
+            // onSubmit={formSubmitHandler}
+          >
+            <FormGroup className="mb-4">
+              <Row>
+                <Col>
+                  <FloatingLabel
+                    controlId="floatingInput"
+                    label="Genre Name"
+                    className="mb-3"
+                  >
+                    <FormControl
+                      type="text"
+                      placeholder="Genre Name"
+                      value={genre_name}
+                      onChange={(e) => {
+                        setSuccess(false);
+                        setGenre(e.target.value);
+                      }}
+                      required
+                    ></FormControl>
+                  </FloatingLabel>
+                </Col>
+              </Row>
+            </FormGroup>
+            {success ? <Success /> : ""}
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={updateSubmitHandler}
+            >
+              UPDATE
+            </Button>
+          </Form>
+        </Container>
+      )}
     </div>
   );
 }

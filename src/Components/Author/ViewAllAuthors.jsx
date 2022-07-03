@@ -1,36 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { Accordion, Container, ListGroup } from "react-bootstrap";
-import axios from "axios";
-
+import {
+  Accordion,
+  Container,
+  ListGroup,
+  Button,
+  Spinner,
+} from "react-bootstrap";
+import { fetchAll, deleteAuthor } from "../../Services/author";
+import UpdateAuthor from "./UpdateAuthor";
 function ViewAllAuthors() {
+  const [updateView, setUpdateView] = useState(false);
+  const [id, setId] = useState("");
   const [responces, setResponce] = useState([]);
-  // const [list, setList] = useState("");
-  // const splitDate = (date) => {
-  //   let newDate = date.split("T");
-  //   return newDate[0];
-  // };
-
-  const fetchAll = () => {
-    axios
-      .get("https://local-library-task-api.herokuapp.com/authors")
-      .then(function (res) {
-        // console.log(res);
+  const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
+  const updateHandler = async (id) => {
+    try {
+      setUpdateView(true);
+      setId(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteHandler = async (id) => {
+    try {
+      setDeleting(true);
+      await deleteAuthor({ id });
+      setDeleting(false);
+      fetchAuthor();
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+  const fetchAuthor = async () => {
+    await fetchAll()
+      .then((res) => {
         setResponce(res.data);
+        setLoading(false);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
       });
   };
   useEffect(() => {
-    fetchAll();
+    fetchAuthor();
   }, []);
   return (
     <Container>
-      <p className="lead text-center">Authors</p>
-      {responces === [] ? (
-        ""
+      {loading ? <Spinner animation="border" /> : ""}
+      {updateView ? (
+        <UpdateAuthor id={id} />
       ) : (
         <>
+          <p className="lead text-center">Authors</p>
           {responces.map((author) => (
             <div key={author._id}>
               <Accordion defaultActiveKey="0" style={{ width: "20rem" }}>
@@ -54,6 +78,29 @@ function ViewAllAuthors() {
                       </ListGroup.Item>
                       <ListGroup.Item>
                         Date of Death: <b>{author.date_of_death}</b>
+                      </ListGroup.Item>
+                      <ListGroup.Item>
+                        <Button
+                          className="mx-4"
+                          onClick={() => {
+                            updateHandler(author._id);
+                          }}
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => {
+                            deleteHandler(author._id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                        {deleting ? (
+                          <Spinner animation="border" variant="danger" />
+                        ) : (
+                          ""
+                        )}
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Body>
