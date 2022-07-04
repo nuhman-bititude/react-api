@@ -14,7 +14,7 @@ function ViewAllAuthors() {
   const [responces, setResponce] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
-  const updateHandler = async (id) => {
+  const updateHandler = (id) => {
     try {
       setUpdateView(true);
       setId(id);
@@ -22,22 +22,28 @@ function ViewAllAuthors() {
       console.log(error);
     }
   };
-  const deleteHandler = async (id) => {
-    try {
-      setDeleting(true);
-      await deleteAuthor({ id });
-      setDeleting(false);
-      fetchAuthor();
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-  const fetchAuthor = async () => {
-    await fetchAll()
+  const deleteHandler = (id) => {
+    setDeleting(true);
+    deleteAuthor({ id })
       .then((res) => {
-        setResponce(res.data);
+        setDeleting(false);
+        if (res.status === 200) {
+          fetchAuthor();
+        }
+      })
+      .catch((e) => {
+        setDeleting(false);
         setLoading(false);
+        console.log(e);
+      });
+  };
+  const fetchAuthor = () => {
+    fetchAll()
+      .then((res) => {
+        if (res.status === 200) {
+          setResponce(res.data);
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);

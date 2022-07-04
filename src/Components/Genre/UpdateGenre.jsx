@@ -11,30 +11,31 @@ import {
 } from "react-bootstrap";
 import { updateGenre, fetchOne } from "../../Services/genre";
 import Success from "../Success";
-import NotFound from "../NotFound";
 import ViewAllgenres from "./ViewAllgenres";
 
 function UpdateGenre({ id }) {
   const [success, setSuccess] = useState(false);
-  const [genre_name, setGenre] = useState("");
+  const [genreName, setGenre] = useState("");
   const [genreView, setGenreView] = useState(false);
   const updateSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      updateGenre({ id: id, genre_name: genre_name });
-      setSuccess(true);
-    } catch (error) {
-      console.log(error);
-      setSuccess(false);
-    }
-    setGenreView(true);
-  };
-  const fetchGenre = async (id) => {
-    try {
-      await fetchOne({ id }).then((res) => {
-        setGenre(res.data.name);
+    updateGenre({ id: id, genre_name: genreName })
+      .then((res) => {
+        if (res.status === 200) {
+          setSuccess(true);
+          setGenreView(true);
+        }
+      })
+      .catch((err) => {
+        setSuccess(false);
+        console.log(err);
       });
-    } catch (error) {}
+  };
+
+  const fetchGenre = (id) => {
+    fetchOne({ id }).then((res) => {
+      if (res.status === 200) setGenre(res.data.name);
+    });
   };
   useEffect(() => {
     fetchGenre(id);
@@ -46,10 +47,7 @@ function UpdateGenre({ id }) {
       ) : (
         <Container>
           <p className="lead text-center">Update Author</p>
-          <Form
-            className="bg-light p-5 border rounded"
-            // onSubmit={formSubmitHandler}
-          >
+          <Form className="bg-light p-5 border rounded">
             <FormGroup className="mb-4">
               <Row>
                 <Col>
@@ -61,7 +59,7 @@ function UpdateGenre({ id }) {
                     <FormControl
                       type="text"
                       placeholder="Genre Name"
-                      value={genre_name}
+                      value={genreName}
                       onChange={(e) => {
                         setSuccess(false);
                         setGenre(e.target.value);

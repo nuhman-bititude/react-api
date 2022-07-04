@@ -4,24 +4,27 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import Success from "../Success";
 import { createAuthor } from "../../Services/author";
 function CreateAuthor() {
-  const formSubmitHandler = async (e) => {
+  const formSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      await createAuthor({
-        first_name: first_name,
-        family_name: family_name,
-        date_of_birth: dob,
-        date_of_death: dod,
+    createAuthor({
+      first_name: firstName,
+      family_name: familyName,
+      date_of_birth: dob,
+      date_of_death: dod,
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          setSuccess(true);
+          resetAll();
+        }
+      })
+      .catch((e) => {
+        console.log(e);
       });
-      setSuccess(true);
-      resetAll();
-    } catch (error) {
-      console.log(error);
-    }
   };
   const [success, setSuccess] = useState(false);
-  const [first_name, setName] = useState("");
-  const [family_name, setFamily] = useState("");
+  const [firstName, setName] = useState("");
+  const [familyName, setFamily] = useState("");
   const [dob, setDob] = useState("");
   const [dod, setDod] = useState("");
   const resetAll = () => {
@@ -49,7 +52,7 @@ function CreateAuthor() {
                     setSuccess(false);
                     setName(e.target.value);
                   }}
-                  value={first_name}
+                  value={firstName}
                   required
                 />
                 <label htmlFor="floatingInputCustom">First Name</label>
@@ -64,7 +67,7 @@ function CreateAuthor() {
                   onChange={(e) => {
                     setFamily(e.target.value);
                   }}
-                  value={family_name}
+                  value={familyName}
                   required
                 />
                 <label htmlFor="floatingInputCustom">Family Name</label>

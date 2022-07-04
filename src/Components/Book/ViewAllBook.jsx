@@ -12,30 +12,33 @@ function ViewAllBook() {
   const [responces, setResponce] = useState([]);
   const [updateView, setUpdateView] = useState(false);
   const [id, setId] = useState("");
+  const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const updateHandler = (id) => {
     setId(id);
     setUpdateView(true);
   };
-  const deleteHandler = async (id) => {
+  const deleteHandler = (id) => {
     setDeleting(true);
-    try {
-      await deleteBook({ id });
-      setDeleting(false);
-      fetchBooks();
-    } catch (error) {
-      console.log(error);
-      setDeleting(false);
-    }
-  };
-  const fetchBooks = async () => {
-    try {
-      await fetchAll().then((res) => {
-        setResponce(res.data);
+    deleteBook({ id })
+      .then((res) => {
+        if (res.status === 200) {
+          setDeleting(false);
+          fetchBooks();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setDeleting(false);
       });
-    } catch (error) {
-      console.log(error);
-    }
+  };
+  const fetchBooks = () => {
+    fetchAll()
+      .then((res) => {
+        setLoading(false);
+        if (res.status === 200) setResponce(res.data);
+      })
+      .catch((err) => console.log(err));
   };
   useEffect(() => {
     fetchBooks();
@@ -46,6 +49,7 @@ function ViewAllBook() {
         <UpdateBook id={id} />
       ) : (
         <>
+          {loading ? <Spinner animation="border" variant="secondary" /> : ""}
           <p className="lead text-center">Books</p>
           {responces.map((book) => (
             <div key={book._id} style={{ width: "20rem" }}>

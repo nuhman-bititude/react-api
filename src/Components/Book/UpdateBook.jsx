@@ -13,57 +13,52 @@ function UpdateBook({ id }) {
   const [authors, setAuthors] = useState([]);
   const [genres, setGenres] = useState([]);
   const [bookView, setBookView] = useState(false);
-  const findBook = async () => {
-    try {
-      await fetchOne({ id }).then((res) => {
-        setTitle(res.data.title);
-        setAuthor(res.data.author);
-        setSummary(res.data.summary);
-        setIsbn(res.data.ISBN);
-        setGenre(res.data.genre);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const findBook = () => {
+    fetchOne({ id })
+      .then((res) => {
+        if (res.status === 200) {
+          setTitle(res.data.title);
+          setAuthor(res.data.author);
+          setSummary(res.data.summary);
+          setIsbn(res.data.ISBN);
+          setGenre(res.data.genre);
+        }
+      })
+      .catch((err) => console.log(err));
   };
-  const findAuthors = async () => {
-    try {
-      await AuthorFetch().then((res) => {
-        setAuthors(res.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const findAuthors = () => {
+    AuthorFetch()
+      .then((res) => {
+        if (res.status === 200) setAuthors(res.data);
+      })
+      .catch((err) => console.log(err));
   };
-  const findGenres = async () => {
-    try {
-      await GenreFetch().then((res) => {
-        setGenres(res.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const findGenres = () => {
+    GenreFetch()
+      .then((res) => {
+        if (res.status === 200) setGenres(res.data);
+      })
+      .catch((err) => console.log(err));
   };
   useEffect((id) => {
     findBook(id);
     findAuthors();
     findGenres();
   }, []);
-  const updateSubmitHandler = async (e) => {
+  const updateSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      await updateBook({
-        id: id,
-        title: title,
-        author: author,
-        summary: summary,
-        isbn: isbn,
-        genre: genre,
-      });
-      setBookView(true);
-    } catch (error) {
-      console.log(error);
-    }
+    updateBook({
+      id: id,
+      title: title,
+      author: author,
+      summary: summary,
+      isbn: isbn,
+      genre: genre,
+    })
+      .then((res) => {
+        if (res.status === 200) setBookView(true);
+      })
+      .catch((err) => console.log);
   };
   return (
     <div>

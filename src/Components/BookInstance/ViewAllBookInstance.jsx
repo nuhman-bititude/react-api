@@ -18,28 +18,33 @@ function ViewAllBookInstance() {
     setUpdateView(true);
     setId(id);
   };
-  const deleteHandler = async (id) => {
+  const deleteHandler = (id) => {
     setDeleting(true);
-    try {
-      await deleteBookInstance({ id });
-      setDeleting(false);
-      fetchBookInstance();
-    } catch (error) {
-      console.log(error);
-      setDeleting(false);
-    }
+    deleteBookInstance({ id })
+      .then((res) => {
+        if (res.status == 200) {
+          setDeleting(false);
+          fetchBookInstance();
+        }
+      })
+      .catch((err) => {
+        setDeleting(false);
+        console.log(err);
+      });
   };
-  const fetchBookInstance = async () => {
-    try {
-      setLoading(true);
-      await fetchAll().then((res) => {
-        setResponce(res.data);
+  const fetchBookInstance = () => {
+    setLoading(true);
+    fetchAll()
+      .then((res) => {
+        if (res.status == 200) {
+          setResponce(res.data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
         setLoading(false);
       });
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
   };
   useEffect(() => {
     fetchBookInstance();

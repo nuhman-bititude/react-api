@@ -18,12 +18,14 @@ function ViewAllgenres() {
   const [loading, setLoading] = useState(true);
   const [responces, setResponce] = useState([]);
   const [id, setId] = useState();
-  const fetchGenre = async () => {
-    await fetchAll()
+  const fetchGenre = () => {
+    fetchAll()
       .then((res) => {
-        setResponce(res.data);
-        setError(false);
-        setLoading(false);
+        if (res.status === 200) {
+          setResponce(res.data);
+          setError(false);
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -35,17 +37,20 @@ function ViewAllgenres() {
     setUpdateView(true);
     setId(id);
   };
-  const deleteHandler = async (id) => {
+  const deleteHandler = (id) => {
     setDeleting(true);
-    try {
-      await deleteGenre({ id });
-      fetchGenre();
-      setDeleting(false);
-      setError(false);
-    } catch (error) {
-      setError(true);
-      setDeleting(false);
-    }
+    deleteGenre({ id })
+      .then((res) => {
+        if (res.status === 200) {
+          fetchGenre();
+          setDeleting(false);
+          setError(false);
+        }
+      })
+      .catch((err) => {
+        setError(true);
+        setDeleting(false);
+      });
   };
   useEffect(() => {
     fetchGenre();

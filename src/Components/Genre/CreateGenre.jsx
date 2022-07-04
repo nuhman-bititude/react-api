@@ -3,17 +3,21 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { createGenre } from "../../Services/genre";
 import Success from "../Success";
 function CreateGenre() {
-  const [genre_name, setGenre] = useState("");
+  const [genreName, setGenre] = useState("");
   const [success, setSuccess] = useState(false);
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      createGenre({ genre_name: genre_name });
-      setSuccess(true);
-    } catch (error) {
-      setSuccess(false);
-    }
-    setGenre("");
+    createGenre({ genre_name: genreName })
+      .then((res) => {
+        if (res.status === 200) {
+          setSuccess(true);
+          setGenre("");
+        }
+      })
+      .catch((err) => {
+        setSuccess(false);
+        console.log(err);
+      });
   };
   return (
     <Container>
@@ -34,7 +38,7 @@ function CreateGenre() {
                     setSuccess(false);
                     setGenre(e.target.value);
                   }}
-                  value={genre_name}
+                  value={genreName}
                   required
                 />
                 <label htmlFor="floatingInputCustom">Genre Name</label>

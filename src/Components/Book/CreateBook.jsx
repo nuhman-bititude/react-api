@@ -3,41 +3,55 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { createBook } from "../../Services/book";
 import { fetchAll as AuthorFetch } from "../../Services/author";
 import { fetchAll as GenreFetch } from "../../Services/genre";
+import Success from "../Success";
 function CreateBook() {
-  const formSubmitHandler = async (e) => {
+  const formSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      await createBook({
-        title: title,
-        author: author,
-        summary: summary,
-        isbn: isbn,
-        genre: genre,
+    createBook({
+      title: title,
+      author: author,
+      summary: summary,
+      isbn: isbn,
+      genre: genre,
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          setTitle("");
+          setAuthor("");
+          setGenre("");
+          setIsbn("");
+          setSummary("");
+          setSuccess(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setSuccess(false);
       });
-      setAuthor("");
-      setGenre("");
-      setIsbn("");
-      setSummary("");
-    } catch (error) {
-      console.log(error);
-    }
   };
-  const findAuthors = async () => {
-    try {
-      await AuthorFetch().then((res) => {
-        setAuthors(res.data);
+  const findAuthors = () => {
+    AuthorFetch()
+      .then((res) => {
+        if (res.status === 200) {
+          setAuthors(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (error) {
-      console.log(error);
-    }
   };
-  const findGenres = async () => {
-    try {
-      await GenreFetch().then((res) => {
-        setGenres(res.data);
+  const findGenres = () => {
+    GenreFetch()
+      .then((res) => {
+        if (res.status === 200) {
+          setGenres(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (error) {}
   };
+  const [success, setSuccess] = useState(false);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [summary, setSummary] = useState("");
@@ -66,6 +80,7 @@ function CreateBook() {
                   name="title"
                   onChange={(e) => {
                     setTitle(e.target.value);
+                    setSuccess(false);
                   }}
                   value={title}
                   required
@@ -140,10 +155,12 @@ function CreateBook() {
               onChange={(e) => {
                 setSummary(e.target.value);
               }}
+              required
             />
             <label htmlFor="floatingInputCustom">Summary</label>
           </Form.Floating>
         </Form.Group>
+        {success ? <Success /> : ""}
         <Button variant="primary" type="submit">
           ADD
         </Button>

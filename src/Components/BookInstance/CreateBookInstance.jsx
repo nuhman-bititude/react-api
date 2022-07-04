@@ -1,38 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { createBookInstance } from "../../Services/bookinstance";
+import Success from "../Success";
 import { fetchAll } from "../../Services/book";
 function CreateBookInstance() {
   const [imprint, setImprint] = useState("");
   const [status, setStatus] = useState("");
-  const [due_back, setDue] = useState("");
+  const [dueBack, setDue] = useState("");
   const [book, setBook] = useState("");
+  const [success, setSuccess] = useState(false);
   const [books, setBooks] = useState([]);
-  const formSubmitHandler = async (e) => {
+  const formSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      await createBookInstance({
-        book: book,
-        imprint: imprint,
-        status: status,
-        due: due_back,
+    createBookInstance({
+      book: book,
+      imprint: imprint,
+      status: status,
+      due: dueBack,
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          setBook("");
+          setImprint("");
+          setStatus("");
+          setDue("");
+          setSuccess(true);
+        }
+      })
+      .catch((err) => {
+        setSuccess(true);
+        console.log(err);
       });
-      setBook("");
-      setImprint("");
-      setStatus("");
-      setDue("");
-    } catch (error) {
-      console.log(error);
-    }
   };
-  const findBooks = async () => {
-    try {
-      await fetchAll().then((res) => {
-        setBooks(res.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const findBooks = () => {
+    fetchAll()
+      .then((res) => {
+        if (res.status === 200) setBooks(res.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -73,6 +78,7 @@ function CreateBookInstance() {
                   name="title"
                   onChange={(e) => {
                     setStatus(e.target.value);
+                    setSuccess(false);
                   }}
                   value={status}
                   required
@@ -112,7 +118,7 @@ function CreateBookInstance() {
                   onChange={(e) => {
                     setDue(e.target.value);
                   }}
-                  value={due_back}
+                  value={dueBack}
                   required
                 />
                 <label htmlFor="floatingInputCustom">Due Back</label>
@@ -120,6 +126,7 @@ function CreateBookInstance() {
             </Col>
           </Row>
         </Form.Group>
+        {success ? <Success /> : ""}
         <Button variant="primary" type="submit">
           ADD
         </Button>

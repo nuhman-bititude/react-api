@@ -7,38 +7,37 @@ function UpdateBookInstance({ id }) {
   const [book, setBook] = useState("");
   const [imprint, setImprint] = useState("");
   const [status, setStatus] = useState("");
-  const [due_back, setDue] = useState("");
-  const findInstance = async () => {
-    try {
-      await fetchOne({ id }).then((res) => {
-        setBook(res.data.book);
-        setImprint(res.data.imprint);
-        setStatus(res.data.status);
-        let due = res.data.due_back.split("T");
-        setDue(due[0]);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const [dueBack, setDue] = useState("");
+  const findInstance = () => {
+    fetchOne({ id })
+      .then((res) => {
+        if (res.status === 200) {
+          setBook(res.data.book);
+          setImprint(res.data.imprint);
+          setStatus(res.data.status);
+          if (res.data.due_back !== undefined) {
+            let due = res.data.due_back.split("T");
+            setDue(due[0]);
+          }
+        }
+      })
+      .catch((err) => console.log(err));
   };
   useEffect((id) => {
     findInstance(id);
   }, []);
 
-  const updateSubmitHandler = async (e) => {
+  const updateSubmitHandler = (e) => {
     e.preventDefault();
-    try {
-      await updateBookInstance({
-        id: id,
-        book: book,
-        imprint: imprint,
-        status: status,
-        due: due_back,
-      });
-      setInstanceView(true);
-    } catch (error) {
-      console.log(error);
-    }
+    updateBookInstance({
+      id: id,
+      book: book,
+      imprint: imprint,
+      status: status,
+      due: dueBack,
+    }).then((res) => {
+      if (res.status == 200) setInstanceView(true);
+    });
   };
   return (
     <div>
@@ -81,7 +80,7 @@ function UpdateBookInstance({ id }) {
                   <Form.Floating className="mb-3">
                     <Form.Control
                       type="date"
-                      value={due_back}
+                      value={dueBack}
                       onChange={(e) => {
                         setDue(e.target.value);
                       }}
