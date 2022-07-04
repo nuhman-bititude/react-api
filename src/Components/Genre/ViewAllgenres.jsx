@@ -57,13 +57,15 @@ function ViewAllgenres() {
   }, []);
   return (
     <Container>
-      {loading ? <Spinner animation="border" role="status" /> : ""}
       {error ? <Page404 /> : ""}
       {updateView ? (
         <UpdateGenre id={id} />
       ) : (
         <>
           <p className="lead text-center">Genres</p>
+          <div className="text-center">
+            {loading ? <Spinner animation="border" role="status" /> : ""}
+          </div>
           <Row>
             <Col>
               {responces.map((genre) => (

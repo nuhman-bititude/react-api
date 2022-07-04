@@ -55,12 +55,14 @@ function ViewAllAuthors() {
   }, []);
   return (
     <Container>
-      {loading ? <Spinner animation="border" /> : ""}
       {updateView ? (
         <UpdateAuthor id={id} />
       ) : (
         <>
           <p className="lead text-center">Authors</p>
+          <div className="text-center">
+            {loading ? <Spinner animation="border" /> : ""}
+          </div>
           {responces.map((author) => (
             <div key={author._id}>
               <Accordion defaultActiveKey="0" style={{ width: "20rem" }}>

@@ -49,8 +49,10 @@ function ViewAllBook() {
         <UpdateBook id={id} />
       ) : (
         <>
-          {loading ? <Spinner animation="border" variant="secondary" /> : ""}
           <p className="lead text-center">Books</p>
+          <div className="text-center">
+            {loading ? <Spinner animation="border" variant="secondary" /> : ""}
+          </div>
           {responces.map((book) => (
             <div key={book._id} style={{ width: "20rem" }}>
               <Accordion defaultActiveKey="0" style={{ width: "25rem" }}>

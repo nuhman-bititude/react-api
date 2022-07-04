@@ -9,7 +9,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Container, Nav, Navbar } from "react-bootstrap";
-
 import BookRoutes from "./Routes/BookRoutes";
 import AuthorRoutes from "./Routes/AuthorRoutes";
 import GenreRoutes from "./Routes/GenreRoutes";
@@ -35,28 +34,28 @@ function App() {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto mx-3 mb-4">
                 <Nav.Item>
-                  <Link to="/" className="route-link">
+                  <Link to="/" className="main-route-link">
                     Home
                   </Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Link to="/book/home" className="route-link">
+                  <Link to="/book/home" className="main-route-link">
                     Book
                   </Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Link to="/author/home" className="route-link">
+                  <Link to="/author/home" className="main-route-link">
                     Author
                   </Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Link to="/genre/home" className="route-link">
+                  <Link to="/genre/home" className="main-route-link">
                     Genre
                   </Link>
                 </Nav.Item>
                 <Nav.Item>
                   {" "}
-                  <Link to="/bookinstance/home" className="route-link">
+                  <Link to="/bookinstance/home" className="main-route-link">
                     Book Instance
                   </Link>
                 </Nav.Item>

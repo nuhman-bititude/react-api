@@ -51,12 +51,14 @@ function ViewAllBookInstance() {
   }, []);
   return (
     <Container>
-      {loading ? <Spinner animation="border" /> : ""}
       {updateView ? (
         <UpdateBookInstance id={id} />
       ) : (
         <>
-          <p className="lead text-center">Books</p>
+          <p className="lead text-center">Book Instances</p>
+          <div className="text-center">
+            {loading ? <Spinner animation="border" /> : ""}
+          </div>
           {responces.map((bookinstance) => (
             <div key={bookinstance._id} style={{ width: "20rem" }}>
               <Accordion defaultActiveKey="0" style={{ width: "25rem" }}>

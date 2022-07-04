@@ -24,10 +24,19 @@
   text-decoration: black;
   border-radius: 15px;
 }
-
-.routes {
-  margin-top: 10px;
+.main-route-link {
+  margin-top: 6px;
+  text-decoration: none;
+  padding-left: 6px;
+  color: black;
+  font-size: large;
 }
-Route {
-  margin-top: 50px;
+.main-route-link:hover {
+  color: rgb(79, 40, 40);
+}
+
+.main-route-link:focus {
+  padding: 10px;
+  background-color: rgb(205, 244, 255);
+  border-radius: 20px;
 }
