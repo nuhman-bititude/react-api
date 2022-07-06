@@ -1,10 +1,12 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import LoginForm from "./Forms/LoginForm";
+import SignupForm from "./Forms/SignupForm";
 
 function Home() {
   return (
     <>
+      {/* <SignupForm /> */}
       <div>
         <Container className="d-flex align-items-center justify-content-center">
           <LoginForm className="bg-light" />

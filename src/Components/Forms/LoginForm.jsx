@@ -10,20 +10,7 @@ function LoginForm() {
   const loginSubmitHandler = (e) => {
     setLoading(true);
     e.preventDefault();
-    if (email === "email@email.com") {
-      if (password === "password") {
-        console.log("welcome home");
-        setLoading(false);
-      } else {
-        setPasswordWarning(true);
-        setButtonColor("danger");
-        setLoading(true);
-      }
-    } else {
-      setEmailWarning(true);
-      setButtonColor("danger");
-      setLoading(true);
-    }
+    //  :TODO
   };
   return (
     <div className="bg-light p-4 rounded ">
@@ -41,6 +28,7 @@ function LoginForm() {
               setButtonColor("success");
               setLoading(false);
             }}
+            autoComplete="off"
             required
           />
           <Form.Text className="text-muted">
