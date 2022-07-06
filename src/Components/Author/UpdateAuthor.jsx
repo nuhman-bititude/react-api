@@ -58,7 +58,7 @@ function UpdateAuthor({ id }) {
   };
   useEffect(() => {
     fetchAuthor(id);
-  }, []);
+  }, [id]);
   return (
     <>
       {authorView ? (

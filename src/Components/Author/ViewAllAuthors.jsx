@@ -11,7 +11,7 @@ import UpdateAuthor from "./UpdateAuthor";
 function ViewAllAuthors() {
   const [updateView, setUpdateView] = useState(false);
   const [id, setId] = useState("");
-  const [responces, setResponce] = useState([]);
+  const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const updateHandler = (id) => {
@@ -41,7 +41,7 @@ function ViewAllAuthors() {
     fetchAll()
       .then((res) => {
         if (res.status === 200) {
-          setResponce(res.data);
+          setAuthors(res.data);
           setLoading(false);
         }
       })
@@ -63,7 +63,7 @@ function ViewAllAuthors() {
           <div className="text-center">
             {loading ? <Spinner animation="border" /> : ""}
           </div>
-          {responces.map((author) => (
+          {authors.map((author) => (
             <div key={author._id}>
               <Accordion defaultActiveKey="0" style={{ width: "20rem" }}>
                 <Accordion.Item>

@@ -29,14 +29,18 @@ function UpdateBook({ id }) {
   const findAuthors = () => {
     AuthorFetch()
       .then((res) => {
-        if (res.status === 200) setAuthors(res.data);
+        if (res.status === 200) {
+          setAuthors(res.data);
+        }
       })
       .catch((err) => console.log(err));
   };
   const findGenres = () => {
     GenreFetch()
       .then((res) => {
-        if (res.status === 200) setGenres(res.data);
+        if (res.status === 200) {
+          setGenres(res.data);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -56,7 +60,9 @@ function UpdateBook({ id }) {
       genre: genre,
     })
       .then((res) => {
-        if (res.status === 200) setBookView(true);
+        if (res.status === 200) {
+          setBookView(true);
+        }
       })
       .catch((err) => console.log);
   };

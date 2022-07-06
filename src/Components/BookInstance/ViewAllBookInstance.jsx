@@ -13,7 +13,7 @@ function ViewAllBookInstance() {
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
-  const [responces, setResponce] = useState([]);
+  const [instances, setInstances] = useState([]);
   const updateHandler = (id) => {
     setUpdateView(true);
     setId(id);
@@ -22,7 +22,7 @@ function ViewAllBookInstance() {
     setDeleting(true);
     deleteBookInstance({ id })
       .then((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           setDeleting(false);
           fetchBookInstance();
         }
@@ -36,8 +36,8 @@ function ViewAllBookInstance() {
     setLoading(true);
     fetchAll()
       .then((res) => {
-        if (res.status == 200) {
-          setResponce(res.data);
+        if (res.status === 200) {
+          setInstances(res.data);
           setLoading(false);
         }
       })
@@ -59,7 +59,7 @@ function ViewAllBookInstance() {
           <div className="text-center">
             {loading ? <Spinner animation="border" /> : ""}
           </div>
-          {responces.map((bookinstance) => (
+          {instances.map((bookinstance) => (
             <div key={bookinstance._id} style={{ width: "20rem" }}>
               <Accordion defaultActiveKey="0" style={{ width: "25rem" }}>
                 <Accordion.Item>

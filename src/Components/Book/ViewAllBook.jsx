@@ -9,7 +9,7 @@ import {
 import { fetchAll, deleteBook } from "../../Services/book";
 import UpdateBook from "./UpdateBook";
 function ViewAllBook() {
-  const [responces, setResponce] = useState([]);
+  const [books, setBooks] = useState([]);
   const [updateView, setUpdateView] = useState(false);
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,9 @@ function ViewAllBook() {
     fetchAll()
       .then((res) => {
         setLoading(false);
-        if (res.status === 200) setResponce(res.data);
+        if (res.status === 200) {
+          setBooks(res.data);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -53,7 +55,7 @@ function ViewAllBook() {
           <div className="text-center">
             {loading ? <Spinner animation="border" variant="secondary" /> : ""}
           </div>
-          {responces.map((book) => (
+          {books.map((book) => (
             <div key={book._id} style={{ width: "20rem" }}>
               <Accordion defaultActiveKey="0" style={{ width: "25rem" }}>
                 <Accordion.Item>

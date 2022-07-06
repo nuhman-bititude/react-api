@@ -36,7 +36,9 @@ function UpdateBookInstance({ id }) {
       status: status,
       due: dueBack,
     }).then((res) => {
-      if (res.status == 200) setInstanceView(true);
+      if (res.status === 200) {
+        setInstanceView(true);
+      }
     });
   };
   return (

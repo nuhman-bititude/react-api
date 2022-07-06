@@ -34,7 +34,9 @@ function UpdateGenre({ id }) {
 
   const fetchGenre = (id) => {
     fetchOne({ id }).then((res) => {
-      if (res.status === 200) setGenre(res.data.name);
+      if (res.status === 200) {
+        setGenre(res.data.name);
+      }
     });
   };
   useEffect(() => {

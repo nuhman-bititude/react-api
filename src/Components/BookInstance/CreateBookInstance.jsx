@@ -35,7 +35,9 @@ function CreateBookInstance() {
   const findBooks = () => {
     fetchAll()
       .then((res) => {
-        if (res.status === 200) setBooks(res.data);
+        if (res.status === 200) {
+          setBooks(res.data);
+        }
       })
       .catch((err) => console.log(err));
   };

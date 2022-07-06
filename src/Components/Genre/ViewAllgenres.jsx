@@ -16,13 +16,13 @@ function ViewAllgenres() {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [responces, setResponce] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [id, setId] = useState();
   const fetchGenre = () => {
     fetchAll()
       .then((res) => {
         if (res.status === 200) {
-          setResponce(res.data);
+          setGenres(res.data);
           setError(false);
           setLoading(false);
         }
@@ -68,7 +68,7 @@ function ViewAllgenres() {
           </div>
           <Row>
             <Col>
-              {responces.map((genre) => (
+              {genres.map((genre) => (
                 <div key={genre._id} style={{ width: "20rem" }}>
                   <Accordion defaultActiveKey="0" style={{ width: "20rem" }}>
                     <Accordion.Item>
@@ -113,7 +113,6 @@ function ViewAllgenres() {
                 </div>
               ))}
             </Col>
-            {/* <Col>{updateView ? <UpdateGenre id={id} /> : ""}</Col> */}
           </Row>
         </>
       )}
