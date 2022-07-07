@@ -18,6 +18,7 @@ import Page404 from "./Components/Page404";
 import SignUpButton from "./Components/UI/SignUpButton";
 import SignupForm from "./Components/Forms/SignupForm";
 import LogoutButton from "./Components/UI/LogoutButton";
+import LoginForm from "./Components/Forms/LoginForm";
 function App() {
   return (
     <div className="App">
@@ -80,6 +81,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/react-api" element={<Navigate to="/" replace />} />
+          <Route path="/login" element={<LoginForm />} />
           <Route path="/book/*" element={<BookRoutes />} />
           <Route path="/author/*" element={<AuthorRoutes />} />
           <Route path="/genre/*" element={<GenreRoutes />} />
