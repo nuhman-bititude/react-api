@@ -43,3 +43,6 @@
 .cursor {
   cursor: pointer;
 }
+.cursor:hover {
+  color: burlywood;
+}

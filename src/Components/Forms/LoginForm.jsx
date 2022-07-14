@@ -24,7 +24,6 @@ function LoginForm() {
     e.preventDefault();
     loginUser({ email, password })
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem("name", res.data.name);
         localStorage.setItem("userType", res.data.userType);
         localStorage.setItem("token", res.data.token);
