@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { fetchAll, deleteGenre } from "../../Services/genre";
-import Page404 from "../Page404";
+import Page404 from "../../Pages/Page404";
 import UpdateGenre from "./UpdateGenre";
 function ViewAllgenres() {
   const [updateView, setUpdateView] = useState(false);

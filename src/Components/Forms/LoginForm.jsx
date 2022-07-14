@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Alert, Spinner, Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Auth";
 import { loginUser } from "../../Services/user";
 function LoginForm() {
   const [emailWarning, setEmailWarning] = useState(false);
@@ -7,21 +9,42 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const signupHandler = (e) => {
+    e.preventDefault();
+    navigate("/user/signup", { replace: true });
+  };
   const loginSubmitHandler = (e) => {
+    setError(false);
+    setErrorMessage("");
     setLoading(true);
     e.preventDefault();
     loginUser({ email, password })
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        localStorage.setItem("name", res.data.name);
+        localStorage.setItem("userType", res.data.userType);
+        localStorage.setItem("token", res.data.token);
+        setError(false);
+        setLoading(false);
+        auth.login(res.data.name);
+        navigate("/", { replace: true });
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
+        setError(true);
+        setErrorMessage("Wrong Email or Password");
       });
   };
   return (
     <Container className="d-flex align-items-center justify-content-center">
       <div className="bg-light p-4 rounded ">
         <p className="lead text-center">Login</p>
+
         <Form onSubmit={loginSubmitHandler}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -34,17 +57,15 @@ function LoginForm() {
                 setEmailWarning(false);
                 setLoading(false);
               }}
-              onInvalid={() => {
-                setEmailWarning(true);
-              }}
-              onInvalidCapture={() => {
+              onInvalidCapture={(e) => {
+                e.preventDefault();
                 setEmailWarning(true);
               }}
               autoComplete="off"
               required
             />
+            {emailWarning && <p className="text-danger">Email not found</p>}
             <Form.Text className="text-muted">
-              {emailWarning && <Alert variant="danger">Email not found</Alert>}
               We'll never share your email with anyone else.
             </Form.Text>
           </Form.Group>
@@ -59,11 +80,19 @@ function LoginForm() {
                 setPasswordWarning(false);
                 setLoading(false);
               }}
+              onInvalidCapture={(e) => {
+                e.preventDefault();
+                setPasswordWarning(true);
+              }}
               required
             />
-            {passwordWarning && <Alert variant="danger">Wrong Password</Alert>}
+            {passwordWarning && <p className="text-danger"> Wrong Password</p>}
+            <p className="text-muted cursor" onClick={signupHandler}>
+              Don't have an Account? Sign In
+            </p>
           </Form.Group>
           <div className="text-center">
+            {error && <Alert variant="danger">{errorMessage}</Alert>}
             <Button variant="success" type="submit">
               {loading && (
                 <Spinner

@@ -3,7 +3,7 @@ import { Route, Link, Routes } from "react-router-dom";
 import { Container, Nav } from "react-bootstrap";
 import CreateBookInstance from "../Components/BookInstance/CreateBookInstance";
 import ViewAllBookInstance from "../Components/BookInstance/ViewAllBookInstance";
-import Page404 from "../Components/Page404";
+import Page404 from "../Pages/Page404";
 import BookInstanceHome from "../Pages/BookInstanceHome";
 
 function BookInstancerRoutes() {

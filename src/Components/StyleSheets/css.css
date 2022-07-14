@@ -40,3 +40,6 @@
   background-color: rgb(205, 244, 255);
   border-radius: 20px;
 }
+.cursor {
+  cursor: pointer;
+}

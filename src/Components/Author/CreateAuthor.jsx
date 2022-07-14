@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 
-import Success from "../Success";
+import Success from "../../Pages/Success";
 import { createAuthor } from "../../Services/author";
 function CreateAuthor() {
   const formSubmitHandler = (e) => {

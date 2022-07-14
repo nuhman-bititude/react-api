@@ -4,7 +4,7 @@ import CreateAuthor from "../Components/Author/CreateAuthor";
 import ViewAllAuthors from "../Components/Author/ViewAllAuthors";
 import { Container, Nav } from "react-bootstrap";
 import AuthorHome from "../Pages/AuthorHome";
-import Page404 from "../Components/Page404";
+import Page404 from "../Pages/Page404";
 function AuthorRoutes() {
   return (
     <div>

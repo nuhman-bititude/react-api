@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { createBookInstance } from "../../Services/bookinstance";
-import Success from "../Success";
+import Success from "../../Pages/Success";
 import { fetchAll } from "../../Services/book";
 function CreateBookInstance() {
   const [imprint, setImprint] = useState("");

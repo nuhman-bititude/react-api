@@ -3,7 +3,7 @@ import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { createBook } from "../../Services/book";
 import { fetchAll as AuthorFetch } from "../../Services/author";
 import { fetchAll as GenreFetch } from "../../Services/genre";
-import Success from "../Success";
+import Success from "../../Pages/Success";
 function CreateBook() {
   const formSubmitHandler = (e) => {
     e.preventDefault();

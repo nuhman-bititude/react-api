@@ -4,7 +4,7 @@ import { Container, Nav } from "react-bootstrap";
 import CreateBook from "../Components/Book/CreateBook";
 import ViewAllBook from "../Components/Book/ViewAllBook";
 import BookHome from "../Pages/BookHome";
-import Page404 from "../Components/Page404";
+import Page404 from "../Pages/Page404";
 
 function BookRoutes() {
   return (

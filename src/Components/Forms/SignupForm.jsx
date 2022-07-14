@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Alert, Button, Container, Row, Col } from "react-bootstrap";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signUpUser } from "../../Services/user";
 function SignupForm() {
   const [name, setName] = useState("");
@@ -10,6 +10,11 @@ function SignupForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+  const loginHandler = (e) => {
+    e.preventDefault();
+    navigate("/login", { replace: true });
+  };
   const resetAll = () => {
     setEmail("");
     setName("");
@@ -22,13 +27,14 @@ function SignupForm() {
       signUpUser({ name, email, password })
         .then((res) => {
           console.log(res);
-          if (res.status === 200 || 201) {
+          if (res.status === 200 || res.status === 201) {
             resetAll();
             setError(false);
+          } else {
+            setError(true);
+            setErrorMessage("Unexpected Error");
+            resetAll();
           }
-          setError(true);
-          setErrorMessage("Unexpected Error");
-          resetAll();
         })
         .catch((err) => {
           if (err.response.status) {
@@ -102,6 +108,9 @@ function SignupForm() {
                 }}
                 required
               />
+              <p className="text-muted cursor" onClick={loginHandler}>
+                Already Have an Accout? Log In
+              </p>
             </Form.Group>
             {error && <Alert variant="danger">{errorMessage}</Alert>}
             <div className="text-center">

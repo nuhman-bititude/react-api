@@ -29,6 +29,7 @@ function ViewAllBook() {
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
         setDeleting(false);
       });
   };
@@ -40,7 +41,10 @@ function ViewAllBook() {
           setBooks(res.data);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
   };
   useEffect(() => {
     fetchBooks();

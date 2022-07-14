@@ -10,7 +10,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { updateGenre, fetchOne } from "../../Services/genre";
-import Success from "../Success";
+import Success from "../../Pages/Success";
 import ViewAllgenres from "./ViewAllgenres";
 
 function UpdateGenre({ id }) {

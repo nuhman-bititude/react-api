@@ -3,7 +3,7 @@ import { Route, Link, Routes } from "react-router-dom";
 import CreateGenre from "../Components/Genre/CreateGenre";
 import ViewAllgenres from "../Components/Genre/ViewAllgenres";
 import { Container, Nav } from "react-bootstrap";
-import Page404 from "../Components/Page404";
+import Page404 from "../Pages/Page404";
 import GenreHome from "../Pages/GenreHome";
 
 function GenreRoutes() {

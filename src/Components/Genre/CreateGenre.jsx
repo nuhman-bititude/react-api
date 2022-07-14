@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 import { createGenre } from "../../Services/genre";
-import Success from "../Success";
+import Success from "../../Pages/Success";
 function CreateGenre() {
   const [genreName, setGenre] = useState("");
   const [success, setSuccess] = useState(false);
