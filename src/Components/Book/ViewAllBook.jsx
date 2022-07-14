@@ -6,6 +6,7 @@ import {
   Button,
   Spinner,
 } from "react-bootstrap";
+import { useAuth } from "../../Auth";
 import { fetchAll, deleteBook } from "../../Services/book";
 import UpdateBook from "./UpdateBook";
 function ViewAllBook() {
@@ -14,6 +15,8 @@ function ViewAllBook() {
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const [isAdmin, setAdmin] = useState(false);
+  const auth = useAuth();
   const updateHandler = (id) => {
     setId(id);
     setUpdateView(true);
@@ -48,7 +51,8 @@ function ViewAllBook() {
   };
   useEffect(() => {
     fetchBooks();
-  }, []);
+    setAdmin(auth.checkAdmin());
+  }, [auth]);
   return (
     <Container>
       {updateView ? (
@@ -86,29 +90,29 @@ function ViewAllBook() {
                       <ListGroup.Item>
                         Summary : <b>{book.summary}</b>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <Button
-                          className="mx-5"
-                          onClick={() => {
-                            updateHandler(book._id);
-                          }}
-                        >
-                          Update
-                        </Button>
-                        <Button
-                          variant="danger"
-                          onClick={() => {
-                            deleteHandler(book._id);
-                          }}
-                        >
-                          Delete
-                        </Button>
-                        {deleting ? (
-                          <Spinner animation="border" variant="danger" />
-                        ) : (
-                          ""
-                        )}
-                      </ListGroup.Item>
+                      {isAdmin && (
+                        <ListGroup.Item>
+                          <Button
+                            className="mx-5"
+                            onClick={() => {
+                              updateHandler(book._id);
+                            }}
+                          >
+                            Update
+                          </Button>
+                          <Button
+                            variant="danger"
+                            onClick={() => {
+                              deleteHandler(book._id);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                          {deleting && (
+                            <Spinner animation="border" variant="danger" />
+                          )}
+                        </ListGroup.Item>
+                      )}
                     </ListGroup>
                   </Accordion.Body>
                 </Accordion.Item>

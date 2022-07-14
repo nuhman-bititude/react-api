@@ -18,6 +18,7 @@ import SignupForm from "./Components/Forms/SignupForm";
 import LoginForm from "./Components/Forms/LoginForm";
 import NavBar from "./Components/UI/NavBar";
 import { AuthProvider } from "./Auth";
+import ProtectedRoutes from "./Routes/ProtectedRoutes";
 function App() {
   return (
     <AuthProvider>
@@ -27,10 +28,38 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/react-api" element={<Navigate to="/" replace />} />
           <Route path="/login" element={<LoginForm />} />
-          <Route path="/book/*" element={<BookRoutes />} />
-          <Route path="/author/*" element={<AuthorRoutes />} />
-          <Route path="/genre/*" element={<GenreRoutes />} />
-          <Route path="/bookinstance/*" element={<BookInstancerRoutes />} />
+          <Route
+            path="/book/*"
+            element={
+              <ProtectedRoutes>
+                <BookRoutes />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/author/*"
+            element={
+              <ProtectedRoutes>
+                <AuthorRoutes />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/genre/*"
+            element={
+              <ProtectedRoutes>
+                <GenreRoutes />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/bookinstance/*"
+            element={
+              <ProtectedRoutes>
+                <BookInstancerRoutes />
+              </ProtectedRoutes>
+            }
+          />
           <Route path="/user/signup" element={<SignupForm />}></Route>
           <Route path="*" element={<Page404 />} />
         </Routes>
