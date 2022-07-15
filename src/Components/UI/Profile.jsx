@@ -10,7 +10,7 @@ function Profile() {
         className="lead text-end text-warning mx-1"
         style={{ fontSize: "14px" }}
       >
-        {auth.user}
+        {auth.user && `Welcome ${auth.user}`}
       </p>
       {auth.isLoggedIn ? <LogoutButton /> : <SignUpButton />}
     </div>

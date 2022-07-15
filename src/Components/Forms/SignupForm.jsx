@@ -108,7 +108,7 @@ function SignupForm() {
                 }}
                 required
               />
-              <p className="text-muted cursor" onClick={loginHandler}>
+              <p className=" cursor" onClick={loginHandler}>
                 Already Have an Accout? Log In
               </p>
             </Form.Group>

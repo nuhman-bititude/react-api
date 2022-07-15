@@ -11,13 +11,16 @@ import {
 import { fetchAll, deleteGenre } from "../../Services/genre";
 import Page404 from "../../Pages/Page404";
 import UpdateGenre from "./UpdateGenre";
+import { useAuth } from "../../Auth";
 function ViewAllgenres() {
   const [updateView, setUpdateView] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [genres, setGenres] = useState([]);
+  const [isAdmin, setAdmin] = useState(false);
   const [id, setId] = useState();
+  const auth = useAuth();
   const fetchGenre = () => {
     fetchAll()
       .then((res) => {
@@ -54,7 +57,8 @@ function ViewAllgenres() {
   };
   useEffect(() => {
     fetchGenre();
-  }, []);
+    setAdmin(auth.checkAdmin());
+  }, [auth]);
   return (
     <Container>
       {error ? <Page404 /> : ""}
@@ -83,29 +87,29 @@ function ViewAllgenres() {
                           <ListGroup.Item>
                             Genre :<b>{genre.name}</b>
                           </ListGroup.Item>
-                          <ListGroup.Item>
-                            <Button
-                              className="mx-4"
-                              onClick={() => {
-                                updateHandler(genre._id);
-                              }}
-                            >
-                              Update
-                            </Button>
-                            <Button
-                              variant="danger"
-                              onClick={() => {
-                                deleteHandler(genre._id);
-                              }}
-                            >
-                              Delete
-                            </Button>
-                            {deleting ? (
-                              <Spinner animation="border" variant="danger" />
-                            ) : (
-                              ""
-                            )}
-                          </ListGroup.Item>
+                          {isAdmin && (
+                            <ListGroup.Item>
+                              <Button
+                                className="mx-4"
+                                onClick={() => {
+                                  updateHandler(genre._id);
+                                }}
+                              >
+                                Update
+                              </Button>
+                              <Button
+                                variant="danger"
+                                onClick={() => {
+                                  deleteHandler(genre._id);
+                                }}
+                              >
+                                Delete
+                              </Button>
+                              {deleting && (
+                                <Spinner animation="border" variant="danger" />
+                              )}
+                            </ListGroup.Item>
+                          )}
                         </ListGroup>
                       </Accordion.Body>
                     </Accordion.Item>

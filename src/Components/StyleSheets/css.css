@@ -42,7 +42,8 @@
 }
 .cursor {
   cursor: pointer;
+  color: rgb(143, 141, 141);
 }
 .cursor:hover {
-  color: burlywood;
+  color: rgb(37, 36, 35);
 }

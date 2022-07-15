@@ -43,13 +43,12 @@ function LoginForm() {
     <Container className="d-flex align-items-center justify-content-center">
       <div className="bg-light p-4 rounded ">
         <p className="lead text-center">Login</p>
-
         <Form onSubmit={loginSubmitHandler}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Enter email"
+              placeholder="user@user.com"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -85,10 +84,12 @@ function LoginForm() {
               }}
               required
             />
-            {passwordWarning && <p className="text-danger"> Wrong Password</p>}
-            <p className="text-muted cursor" onClick={signupHandler}>
-              Don't have an Account? Sign In
-            </p>
+            {passwordWarning && (
+              <p className="text-danger"> Invalid Password</p>
+            )}
+            <div className="cursor">
+              <p onClick={signupHandler}>Don't have an Account? Sign In</p>
+            </div>
           </Form.Group>
           <div className="text-center">
             {error && <Alert variant="danger">{errorMessage}</Alert>}
